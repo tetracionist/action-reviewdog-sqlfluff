@@ -76,9 +76,10 @@ def main():
     lint_output = json.loads(json_content)
     rdjsonl_output = transform_to_rdjsonl(lint_output, args.dbt_project_dir)
 
-    # Print the transformed output in rdjsonl format
-    for entry in rdjsonl_output:
-        print(json.dumps(entry))
+    with open("violations.rdjsonl", "w") as outfile:
+        for entry in rdjsonl_output:
+            json.dump(entry, outfile)
+            outfile.write("\n")
 
 
 if __name__ == "__main__":
