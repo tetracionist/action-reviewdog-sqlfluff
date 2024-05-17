@@ -8,6 +8,12 @@ jobs:
   test-check:
     name: runner / sqlfluff (github-check)
     runs-on: ubuntu-latest
+    env:
+      ACCOUNT: {{ secrets.ACCOUNT }}
+      USERNAME: {{ secrets.USERNAME }}
+      PASSWORD: {{ secrets.PASSWORD }}
+      DATABASE: {{ secrets.DATABASE }}
+      SCHEMA: {{ secrets.SCHEMA }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./
@@ -21,6 +27,13 @@ jobs:
     if: github.event_name == 'pull_request'
     name: runner / sqlfluff (github-pr-check)
     runs-on: ubuntu-latest
+    env:
+      ACCOUNT: {{ secrets.ACCOUNT }}
+      USERNAME: {{ secrets.USERNAME }}
+      PASSWORD: {{ secrets.PASSWORD }}
+      DATABASE: {{ secrets.DATABASE }}
+      SCHEMA: {{ secrets.SCHEMA }}
+
     steps:
       - uses: actions/checkout@v4
       - uses: ./
@@ -34,6 +47,12 @@ jobs:
     if: github.event_name == 'pull_request'
     name: runner / sqlfluff (github-pr-review)
     runs-on: ubuntu-latest
+    env:
+      ACCOUNT: {{ secrets.ACCOUNT }}
+      USERNAME: {{ secrets.USERNAME }}
+      PASSWORD: {{ secrets.PASSWORD }}
+      DATABASE: {{ secrets.DATABASE }}
+      SCHEMA: {{ secrets.SCHEMA }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./

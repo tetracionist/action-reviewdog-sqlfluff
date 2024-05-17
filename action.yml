@@ -50,10 +50,6 @@ inputs:
     description: dialect of the sql
     default: snowflake
 
-  ### Flags for misspellings ###
-  locale:
-    description: '-locale flag of misspell. (US/UK)'
-    default: ''
 runs:
   using: 'docker'
   image: 'Dockerfile'
