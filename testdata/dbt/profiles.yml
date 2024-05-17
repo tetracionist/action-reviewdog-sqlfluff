@@ -1,5 +1,5 @@
 default:
-  target: "snowflake"
+  target: "${INPUT_DBT_TARGET}"
   outputs:
     snowflake:
       type: snowflake
