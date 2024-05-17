@@ -16,7 +16,6 @@ dbt clean && dbt deps
 sqlfluff lint --templater ${INPUT_SQLFLUFF_TEMPLATER} --dialect ${INPUT_SQLFLUFF_DIALECT} --disable-progress-bar . --format json --logger linter --write-output sqlfluff_lint_results.rdjson \
 
 cat <"violations.rdjson" | reviewdog -f=rdjson \
-    -efm="%f:%l:%c: %m" \
     -name="sqlfluff (sqlfluff-fix)" \
     -reporter="${INPUT_REPORTER:-github-pr-check}" \
     -filter-mode="${INPUT_FILTER_MODE}" \
