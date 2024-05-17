@@ -32,9 +32,9 @@ inputs:
 
   ### Flags for dbt ###
   dbt_core_version: 
-    default: 1.8.0
+    default: 1.7.14
   dbt_adapter_version:
-    default: 1.8.1
+    default: 1.7.4
   dbt_project_dir:
     default: ./dbt
   dbt_profiles_dir:
