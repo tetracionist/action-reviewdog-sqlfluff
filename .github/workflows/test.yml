@@ -88,8 +88,7 @@ jobs:
           dbt_project_dir: ./testdata/dbt
           github_token: ${{ secrets.github_token }}
           level: error
-          reporter: github-pr-review
-          reviewdog_flags: -filter-mode=file -fail-on-error
+          reporter: github-check
           sqlfluff_mode: fix
 
   test-pr-check-fix:
@@ -111,8 +110,7 @@ jobs:
           dbt_project_dir: ./testdata/dbt
           github_token: ${{ secrets.github_token }}
           level: error
-          reporter: github-pr-review
-          reviewdog_flags: -filter-mode=file -fail-on-error
+          reporter: github-pr-check
           sqlfluff_mode: fix
 
   test-pr-review-fix:
