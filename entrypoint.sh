@@ -18,7 +18,7 @@ sqlfluff lint --templater ${INPUT_SQLFLUFF_TEMPLATER} --dialect ${INPUT_SQLFLUFF
 cd "${GITHUB_WORKSPACE}" || exit
 
 
-python -m json_to_error_format --dbt_project_dir "${INPUT_DBT_PROJECT_DIR}" 
+python -m json_to_rdjsonl --dbt_project_dir "${INPUT_DBT_PROJECT_DIR}" 
 
 # | reviewdog -efm="%f:%l:%c: %m" \
 #     -name="sqlfluff (sqlfluff-fix)" \
