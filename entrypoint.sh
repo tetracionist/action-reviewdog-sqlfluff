@@ -15,19 +15,19 @@ dbt clean && dbt deps
 
 
 if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then
-  sqlfluff lint --templater ${INPUT_SQLFLUFF_TEMPLATER} --dialect ${INPUT_SQLFLUFF_DIALECT} --disable-progress-bar . --format json > ${GITHUB_WORKSPACE}/lint_output.json
+  sqlfluff lint --templater "${INPUT_SQLFLUFF_TEMPLATER}" --dialect "${INPUT_SQLFLUFF_DIALECT}" --disable-progress-bar . --format json > "${GITHUB_WORKSPACE}"/lint_output.json
 
   cd "${GITHUB_WORKSPACE}" || exit
 
   python -m json_to_rdjsonl --dbt_project_dir "${INPUT_DBT_PROJECT_DIR}" 
 
-  cat < ${GITHUB_WORKSPACE}/"violations.rdjsonl"| reviewdog -f=rdjsonl \
+  cat < "${GITHUB_WORKSPACE}"/"violations.rdjsonl"| reviewdog -f=rdjsonl \
       -name="sqlfluff (sqlfluff-lint)" \
       -reporter="${INPUT_REPORTER:-github-pr-check}" \
       -filter-mode="${INPUT_FILTER_MODE}" \
       -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
       -level="${INPUT_LEVEL}" \
-      ${INPUT_REVIEWDOG_FLAGS}
+      "${INPUT_REVIEWDOG_FLAGS}"
 
 elif [[ "${INPUT_SQLFLUFF_MODE}" == "fix" ]]; then
   sqlfluff fix --templater dbt --dialect snowflake --disable-progress-bar .
