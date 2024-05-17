@@ -12,15 +12,14 @@ fi
 
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
-sqlfluff fix \
-  --templater ${INPUT_SQLFLUFF_TEMPLATER} \
-  --dialect ${INPUT_SQLFLUFF_DIALECT} \
-  . \
-  | reviewdog -efm="%f:%l:%c: %m" \
-      -name="sqlfluff (sqlfluff-fix)" \
-      -reporter="${INPUT_REPORTER:-github-pr-check}" \
-      -filter-mode="${INPUT_FILTER_MODE}" \
-      -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
-      -level="${INPUT_LEVEL}" \
-      ${INPUT_REVIEWDOG_FLAGS}
+dbt clean && dbt deps
+
+sqlfluff fix --templater ${INPUT_SQLFLUFF_TEMPLATER} --dialect ${INPUT_SQLFLUFF_DIALECT} . \
+| reviewdog -efm="%f:%l:%c: %m" \
+    -name="sqlfluff (sqlfluff-fix)" \
+    -reporter="${INPUT_REPORTER:-github-pr-check}" \
+    -filter-mode="${INPUT_FILTER_MODE}" \
+    -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
+    -level="${INPUT_LEVEL}" \
+    ${INPUT_REVIEWDOG_FLAGS}
 
