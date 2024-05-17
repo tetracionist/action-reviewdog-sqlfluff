@@ -4,3 +4,4 @@ default:
     dev:
       type: snowflake
       database: snowflake_database
+      schema: snowflake_schema
