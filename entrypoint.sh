@@ -16,7 +16,7 @@ dbt clean && dbt deps
 sqlfluff lint --templater ${INPUT_SQLFLUFF_TEMPLATER} --dialect ${INPUT_SQLFLUFF_DIALECT} --disable-progress-bar . --format github-annotation-native \
 | reviewdog -efm="%f:%l:%c: %m" \
     -name="sqlfluff (sqlfluff-fix)" \
-    -reporter="${INPUT_REPORTER:-github-pr-annotations}" \
+    -reporter="github-pr-annotations" \
     -filter-mode="${INPUT_FILTER_MODE}" \
     -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
     -level="${INPUT_LEVEL}" \
