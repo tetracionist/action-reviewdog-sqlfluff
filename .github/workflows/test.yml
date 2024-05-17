@@ -4,8 +4,10 @@ on:
     branches:
       - main
   pull_request:
+    branches:
+      - main
 jobs:
-  test-check:
+  test-check-lint:
     name: runner / sqlfluff (github-check)
     runs-on: ubuntu-latest
     env:
@@ -24,7 +26,7 @@ jobs:
           level: info
           dbt_project_dir: ./testdata/dbt
 
-  test-pr-check:
+  test-pr-check-lint:
     if: github.event_name == 'pull_request'
     name: runner / sqlfluff (github-pr-check)
     runs-on: ubuntu-latest
@@ -45,7 +47,7 @@ jobs:
           level: warning
           dbt_project_dir: ./testdata/dbt
 
-  test-pr-review:
+  test-pr-review-lint:
     if: github.event_name == 'pull_request'
     name: runner / sqlfluff (github-pr-review)
     runs-on: ubuntu-latest
@@ -68,3 +70,72 @@ jobs:
           level: error
           reviewdog_flags: -filter-mode=file -fail-on-error
           dbt_project_dir: ./testdata/dbt
+
+  test-check-fix:
+    name: runner / sqlfluff (github-check)
+    runs-on: ubuntu-latest
+    env:
+      ACCOUNT: ${{ secrets.ACCOUNT }}
+      USERNAME: ${{ secrets.USER }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      DATABASE: ${{ secrets.DATABASE }}
+      SCHEMA: ${{ secrets.SCHEMA }}
+      WAREHOUSE: ${{ secrets.WAREHOUSE }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          dbt_project_dir: ./testdata/dbt
+          github_token: ${{ secrets.github_token }}
+          level: error
+          reporter: github-pr-review
+          reviewdog_flags: -filter-mode=file -fail-on-error
+          sqlfluff_mode: fix
+
+  test-pr-check-fix:
+    if: github.event_name == 'pull_request'
+    name: runner / sqlfluff (github-pr-check)
+    runs-on: ubuntu-latest
+    env:
+      ACCOUNT: ${{ secrets.ACCOUNT }}
+      USERNAME: ${{ secrets.USER }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      DATABASE: ${{ secrets.DATABASE }}
+      SCHEMA: ${{ secrets.SCHEMA }}
+      WAREHOUSE: ${{ secrets.WAREHOUSE }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          dbt_project_dir: ./testdata/dbt
+          github_token: ${{ secrets.github_token }}
+          level: error
+          reporter: github-pr-review
+          reviewdog_flags: -filter-mode=file -fail-on-error
+          sqlfluff_mode: fix
+
+  test-pr-review-fix:
+    if: github.event_name == 'pull_request'
+    name: runner / sqlfluff (github-pr-review)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write 
+    env:
+      ACCOUNT: ${{ secrets.ACCOUNT }}
+      USERNAME: ${{ secrets.USER }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      DATABASE: ${{ secrets.DATABASE }}
+      SCHEMA: ${{ secrets.SCHEMA }}
+      WAREHOUSE: ${{ secrets.WAREHOUSE }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          dbt_project_dir: ./testdata/dbt
+          github_token: ${{ secrets.github_token }}
+          level: error
+          reporter: github-pr-review
+          reviewdog_flags: -filter-mode=file -fail-on-error
+          sqlfluff_mode: fix

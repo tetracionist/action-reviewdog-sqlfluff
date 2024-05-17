@@ -43,14 +43,19 @@ inputs:
     default: snowflake
 
   ### Flags for sqlfluff ###
-  sqlfluff_version:
-    default: 3.0.6
-  sqlfluff_templater:
-    description: templater for the sql
-    default: dbt
+  
+  
   sqlfluff_dialect: 
     description: dialect of the sql
     default: snowflake
+  sqlfluff_mode:
+    description: fix/lint (fix shows suggestion, lint reports violations)
+    default: lint
+  sqlfluff_templater:
+    description: templater for the sql
+    default: dbt
+  sqlfluff_version:
+    default: 3.0.6
 
 runs:
   using: 'docker'
