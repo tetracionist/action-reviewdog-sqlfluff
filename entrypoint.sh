@@ -1,16 +1,18 @@
 #!/bin/sh
 set -e
 
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
 if [ -n "${GITHUB_WORKSPACE}" ] ; then
-  cd "${GITHUB_WORKSPACE}/${INPUT_WORKDIR}" || exit
+  cd "${GITHUB_WORKSPACE}/${DBT_PROJECT_DIR}" || exit
   git config --global --add safe.directory "${GITHUB_WORKSPACE}" || exit 1
 fi
 
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+
 
 sqlfluff fix \
   --templater ${INPUT_SQLFLUFF_TEMPLATER} \
