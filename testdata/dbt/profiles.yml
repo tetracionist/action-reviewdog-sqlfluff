@@ -4,7 +4,7 @@ default:
     snowflake:
       type: snowflake
       account: "{{ env_var('ACCOUNT') }}"
-      username: "{{ env_var('USERNAME') }}"
+      user: "{{ env_var('USERNAME') }}"
       password: "{{ env_var('PASSWORD') }}"
       database: "{{ env_var('DATABASE') }}"
       schema: "{{ env_var('SCHEMA') }}"

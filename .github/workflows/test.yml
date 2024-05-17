@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ACCOUNT: ${{ secrets.ACCOUNT }}
-      USERNAME: ${{ secrets.USERNAME }}
+      USERNAME: ${{ secrets.USER }}
       PASSWORD: ${{ secrets.PASSWORD }}
       DATABASE: ${{ secrets.DATABASE }}
       SCHEMA: ${{ secrets.SCHEMA }}
@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ACCOUNT: ${{ secrets.ACCOUNT }}
-      USERNAME: ${{ secrets.USERNAME }}
+      USERNAME: ${{ secrets.USER }}
       PASSWORD: ${{ secrets.PASSWORD }}
       DATABASE: ${{ secrets.DATABASE }}
       SCHEMA: ${{ secrets.SCHEMA }}
@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ACCOUNT: ${{ secrets.ACCOUNT }}
-      USERNAME: ${{ secrets.USERNAME }}
+      USERNAME: ${{ secrets.USER }}
       PASSWORD: ${{ secrets.PASSWORD }}
       DATABASE: ${{ secrets.DATABASE }}
       SCHEMA: ${{ secrets.SCHEMA }}
