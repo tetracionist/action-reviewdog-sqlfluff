@@ -8,6 +8,8 @@ fi
 
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
+python3 -m venv .venv
+.venv venv/bin/activate
 pip install -r requirements.txt
 
 misspell -locale="${INPUT_LOCALE}" . \
