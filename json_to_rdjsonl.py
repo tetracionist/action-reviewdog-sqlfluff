@@ -35,6 +35,22 @@ def transform_to_rdjsonl(lint_output, dbt_project_dir):
                         },
                     },
                 },
+                "suggestions": [
+                        {
+                            "range": {
+                                "start": {
+                                    "line": fix["start_line_no"],
+                                    "column": fix["start_line_pos"],
+                                },
+                                "end": {
+                                    "line": fix["end_line_no"],
+                                    "column": fix["end_line_pos"],
+                                },
+                            },
+                            "text": fix["edit"],
+                        }
+                        for fix in violation.get("fixes", [])
+                    ],
                 "severity": "ERROR",
             }
             rdjsonl_lines.append(rdjsonl_line)
