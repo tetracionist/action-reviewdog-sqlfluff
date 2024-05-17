@@ -1,5 +1,5 @@
 default:
-  target: ${INPUT_DBT_TARGET}
+  target: "{{ env_var('DBT_TARGET', 'snowflake') }}"
   outputs:
     snowflake:
       type: snowflake
