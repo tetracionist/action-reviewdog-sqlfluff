@@ -32,22 +32,12 @@ if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then
 elif [[ "${INPUT_SQLFLUFF_MODE}" == "fix" ]]; then
   sqlfluff fix --templater dbt --dialect snowflake --disable-progress-bar .
 
-  temp_file=$(mktemp)
-  git diff | tee "${temp_file}"
-  git stash -u
-
-  # shellcheck disable=SC2034
-  reviewdog \
-    -name="sqlfluff (sqlfluff-fix)" \
-    -f=diff \
+  TMPFILE=$(mktemp)
+  git diff >"${TMPFILE}"
+  git stash -u && git stash drop
+  reviewdog -f=diff \
     -f.diff.strip=1 \
-    -reporter="${INPUT_REPORTER}" \
-    -filter-mode="${INPUT_FILTER_MODE}" \
-    -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
-    -level="${INPUT_LEVEL}" <"${temp_file}" || exit_code=$?
-
-  # Clean up
-  git stash drop || true
+    -reporter="${INPUT_REPORTER:-github-pr-check}"< "${TMPFILE}"
 
 fi
 
