@@ -22,7 +22,7 @@ python -m json_to_rdjsonl --dbt_project_dir "${INPUT_DBT_PROJECT_DIR}"
 
 cat < ${GITHUB_WORKSPACE}/"violations.rdjsonl"| reviewdog -f=rdjsonl \
     -name="sqlfluff (sqlfluff-fix)" \
-    -reporter="github-pr-review" \
+    -reporter="${INPUT_REPORTER:-github-pr-check}" \
     -filter-mode="${INPUT_FILTER_MODE}" \
     -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
     -level="${INPUT_LEVEL}" \

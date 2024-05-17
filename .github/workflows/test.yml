@@ -49,6 +49,9 @@ jobs:
     if: github.event_name == 'pull_request'
     name: runner / sqlfluff (github-pr-review)
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write 
     env:
       ACCOUNT: ${{ secrets.ACCOUNT }}
       USERNAME: ${{ secrets.USER }}
