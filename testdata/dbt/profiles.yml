@@ -3,3 +3,4 @@ default:
   outputs:
     dev:
       type: snowflake
+      database: snowflake_database
