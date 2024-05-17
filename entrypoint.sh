@@ -8,6 +8,8 @@ fi
 
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
+pip install -r requirements.txt
+
 misspell -locale="${INPUT_LOCALE}" . \
   | reviewdog -efm="%f:%l:%c: %m" \
       -name="linter-name (misspell)" \

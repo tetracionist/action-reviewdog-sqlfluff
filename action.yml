@@ -1,6 +1,6 @@
-name: 'TODO: Run <linter-name> with reviewdog'
-description: 'TODO: 🐶 Run <linter-name> with reviewdog on pull requests to improve code review experience.'
-author: 'TODO: <your-name>'
+name: 'Run sqlfluff with reviewdog'
+description: '🐶 Run sqlfluff with reviewdog on pull requests to improve code review experience.'
+author: 'Alexander Wornast'
 inputs:
   github_token:
     description: 'GITHUB_TOKEN'
@@ -8,6 +8,7 @@ inputs:
   workdir:
     description: 'Working directory relative to the root directory.'
     default: '.'
+
   ### Flags for reviewdog ###
   level:
     description: 'Report level for reviewdog [info,warning,error]'
@@ -28,7 +29,22 @@ inputs:
   reviewdog_flags:
     description: 'Additional reviewdog flags'
     default: ''
-  ### Flags for <linter-name> ###
+
+  ### Flags for sqlfluff ###
+  sqlfluff_version:
+    default: 3.0.6
+  dbt_core_version: 
+    default: 1.8.0
+  dbt_adapter_version:
+    default: 1.8.1
+  sqlfluff_templater:
+    description: templater for the sql
+    default: dbt
+  sqlfluff_dialect: 
+    description: dialect of the sql
+    default: snowflake
+
+  ### Flags for misspellings ###
   locale:
     description: '-locale flag of misspell. (US/UK)'
     default: ''
@@ -37,7 +53,6 @@ runs:
   image: 'Dockerfile'
 
 # Ref: https://haya14busa.github.io/github-action-brandings/
-# TODO: update branding if you want.
 branding:
   icon: 'check'
   color: 'blue'
