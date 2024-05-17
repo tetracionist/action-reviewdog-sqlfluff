@@ -1,0 +1,12 @@
+default:
+  target: "dev"
+  outputs:
+    dev:
+      type: snowflake
+      account: snowflake_account
+      user: snowflake_username
+      password: snowflake_password
+      database: snowlfake_database
+      warehouse: snowflake_warehouse
+      schema: snowflake_schema
+      threads: 4
