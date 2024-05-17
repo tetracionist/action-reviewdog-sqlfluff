@@ -9,4 +9,14 @@ default:
       database: "{{ env_var('DATABASE') }}"
       schema: "{{ env_var('SCHEMA') }}"
       warehouse: "{{ env_var('WAREHOUSE') }}"
+    materialize:
+      type: materialize
+      host: "{{ env_var('ACCOUNT') }}"
+      port: 6875
+      user: "{{ env_var('USERNAME') }}"
+      pass: "{{ env_var('PASSWORD') }}"
+      database: "{{ env_var('DATABASE') }}"
+      schema: "{{ env_var('SCHEMA', public) }}"
+      cluster: "{{ env_var('CLUSTER', 'compute_cluster') }}"
+      sslmode: require
       

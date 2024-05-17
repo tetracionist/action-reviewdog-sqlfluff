@@ -21,7 +21,7 @@ cd "${GITHUB_WORKSPACE}" || exit
 python -m json_to_rdjsonl --dbt_project_dir "${INPUT_DBT_PROJECT_DIR}" 
 
 cat < ${GITHUB_WORKSPACE}/"violations.rdjsonl"| reviewdog -f=rdjsonl \
-    -name="sqlfluff (sqlfluff-fix)" \
+    -name="sqlfluff (sqlfluff-lint)" \
     -reporter="${INPUT_REPORTER:-github-pr-check}" \
     -filter-mode="${INPUT_FILTER_MODE}" \
     -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
