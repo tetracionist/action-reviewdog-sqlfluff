@@ -4,7 +4,7 @@ name: "jaffle_shop"
 version: "3.0.0"
 require-dbt-version: ">=1.5.0"
 
-profile: default # Put your profile here
+profile: data_analytics_snowflake # Put your profile here
 
 model-paths: ["models"]
 analysis-paths: ["analyses"]
