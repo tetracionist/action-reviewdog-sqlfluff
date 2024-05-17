@@ -37,8 +37,9 @@ elif [[ "${INPUT_SQLFLUFF_MODE}" == "fix" ]]; then
   git stash -u && git stash drop
   reviewdog -f=diff \
     -f.diff.strip=1 \
-    -reporter="${INPUT_REPORTER:-github-pr-check}"< "${TMPFILE}"
-    ${INPUT_REVIEWDOG_FLAGS}
+    -reporter="${INPUT_REPORTER:-github-pr-check}" \
+    ${INPUT_REVIEWDOG_FLAGS} < "${TMPFILE}"
+    
 
 fi
 
