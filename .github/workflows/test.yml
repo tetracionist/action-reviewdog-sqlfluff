@@ -29,7 +29,6 @@ jobs:
           reporter: github-pr-check
           level: warning
           locale: "UK"
-          workdir: ./testdata/subdir/
           dbt_project_dir: ./testdata/dbt
 
   test-pr-review:
