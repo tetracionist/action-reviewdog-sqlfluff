@@ -50,7 +50,7 @@ jobs:
           reporter: github-check
           level: warning
           locale: "UK"
-          exclude: ./testdata/dbt/seeds/*
+          exclude: ./testdata/dbt/jaffle-data/*
 
   alex:
     name: runner / alex
