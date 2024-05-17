@@ -30,13 +30,17 @@ inputs:
     description: 'Additional reviewdog flags'
     default: ''
 
-  ### Flags for sqlfluff ###
-  sqlfluff_version:
-    default: 3.0.6
+  ### Flags for dbt ###
   dbt_core_version: 
     default: 1.8.0
   dbt_adapter_version:
     default: 1.8.1
+  dbt_project_dir:
+    default: ./dbt
+
+  ### Flags for sqlfluff ###
+  sqlfluff_version:
+    default: 3.0.6
   sqlfluff_templater:
     description: templater for the sql
     default: dbt
