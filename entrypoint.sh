@@ -12,15 +12,6 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 
-misspell -locale="${INPUT_LOCALE}" . \
-  | reviewdog -efm="%f:%l:%c: %m" \
-      -name="sqfluff (misspell)" \
-      -reporter="${INPUT_REPORTER:-github-pr-check}" \
-      -filter-mode="${INPUT_FILTER_MODE}" \
-      -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
-      -level="${INPUT_LEVEL}" \
-      ${INPUT_REVIEWDOG_FLAGS}
-
 sqlfluff fix \
   --templater ${INPUT_SQLFLUFF_TEMPLATER} \
   --dialect ${INPUT_SQLFLUFF_DIALECT} \
