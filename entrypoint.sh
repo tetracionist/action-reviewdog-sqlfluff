@@ -41,10 +41,10 @@ elif [[ "${INPUT_SQLFLUFF_MODE}" == "fix" ]]; then
     -name="sqlfluff (sqlfluff-fix)" \
     -f=diff \
     -f.diff.strip=1 \
-    -reporter="${REVIEWDOG_REPORTER}" \
-    -filter-mode="${REVIEWDOG_FILTER_MODE}" \
-    -fail-on-error="${REVIEWDOG_FAIL_ON_ERROR}" \
-    -level="${REVIEWDOG_LEVEL}" <"${temp_file}" || exit_code=$?
+    -reporter="${INPUT_REVIEWDOG_REPORTER}" \
+    -filter-mode="${INPUT_REVIEWDOG_FILTER_MODE}" \
+    -fail-on-error="${INPUT_REVIEWDOG_FAIL_ON_ERROR}" \
+    -level="${INPUT_REVIEWDOG_LEVEL}" <"${temp_file}" || exit_code=$?
 
   # Clean up
   git stash drop || true
