@@ -3,5 +3,7 @@ default:
   outputs:
     dev:
       type: snowflake
+      account: snowflake_account
       database: snowflake_database
       schema: snowflake_schema
+      
