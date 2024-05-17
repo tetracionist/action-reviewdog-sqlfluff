@@ -1,7 +1,7 @@
 #!/bin/sh
 
 python3 -m venv .venv
-source .venv/bin/activate
+. .venv/bin/activate
 pip install -r requirements.txt
 
 if [ -n "${GITHUB_WORKSPACE}" ] ; then
@@ -27,7 +27,7 @@ if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then
       -filter-mode="${INPUT_FILTER_MODE}" \
       -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
       -level="${INPUT_LEVEL}" \
-      "${INPUT_REVIEWDOG_FLAGS}"
+      ${INPUT_REVIEWDOG_FLAGS}
 
 elif [[ "${INPUT_SQLFLUFF_MODE}" == "fix" ]]; then
   sqlfluff fix --templater dbt --dialect snowflake --disable-progress-bar .
@@ -38,6 +38,7 @@ elif [[ "${INPUT_SQLFLUFF_MODE}" == "fix" ]]; then
   reviewdog -f=diff \
     -f.diff.strip=1 \
     -reporter="${INPUT_REPORTER:-github-pr-check}"< "${TMPFILE}"
+    ${INPUT_REVIEWDOG_FLAGS}
 
 fi
 
