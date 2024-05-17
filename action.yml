@@ -38,7 +38,7 @@ inputs:
   dbt_project_dir:
     default: ./dbt
   dbt_profiles_dir:
-    default: "~/.dbt/profiles"
+    default: "."
 
   ### Flags for sqlfluff ###
   sqlfluff_version:

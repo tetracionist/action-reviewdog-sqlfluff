@@ -6,7 +6,7 @@ max_line_length = 80
 indent_unit = space
 
 [sqlfluff:templater:dbt]
-profiles_dir = .
+profiles_dir = ${INPUT_DBT_PROFILES_DIR}
 
 [sqlfluff:indentation]
 tab_space_size = 4

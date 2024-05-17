@@ -14,7 +14,7 @@ export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
 dbt clean && dbt deps
 
-sqlfluff fix --templater ${INPUT_SQLFLUFF_TEMPLATER} --dialect ${INPUT_SQLFLUFF_DIALECT} . \
+sqlfluff lint --templater ${INPUT_SQLFLUFF_TEMPLATER} --dialect ${INPUT_SQLFLUFF_DIALECT} --disable-progress-bar . \
 | reviewdog -efm="%f:%l:%c: %m" \
     -name="sqlfluff (sqlfluff-fix)" \
     -reporter="${INPUT_REPORTER:-github-pr-check}" \
