@@ -32,6 +32,8 @@ if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then
 elif [[ "${INPUT_SQLFLUFF_MODE}" == "fix" ]]; then
   sqlfluff fix --templater "${INPUT_SQLFLUFF_TEMPLATER}" --dialect "${INPUT_SQLFLUFF_DIALECT}" .
 
+  cd "${GITHUB_WORKSPACE}" || exit
+
   TMPFILE=$(mktemp)
   git diff >"${TMPFILE}"
   git stash -u && git stash drop
