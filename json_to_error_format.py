@@ -43,13 +43,13 @@ def transform_to_rdjsonl(lint_output, dbt_project_dir):
 
 def main():
     parser = argparse.ArgumentParser(description="Convert SQL lint output to rdjsonl format")
-    parser.add_argument("filename", help="Path to the JSON lint output file", default="lint_output.json")
-    parser.add_argument("dbt_project_dir", help="Path to the DBT project directory")
+    parser.add_argument("--filename", help="Path to the JSON lint output file", default="lint_output.json", required=False)
+    parser.add_argument("--dbt_project_dir", help="Path to the DBT project directory", required=True)
     args = parser.parse_args()
 
     json_content = preprocess_file(args.filename)
     lint_output = json.loads(json_content)
-    rdjsonl_output = transform_to_rdjsonl(lint_output)
+    rdjsonl_output = transform_to_rdjsonl(lint_output, args.dbt_project_dir)
     
     # Print the transformed output in rdjsonl format
     for entry in rdjsonl_output:
