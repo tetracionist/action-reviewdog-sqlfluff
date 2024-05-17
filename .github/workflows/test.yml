@@ -30,6 +30,7 @@ jobs:
           level: warning
           locale: "UK"
           workdir: ./testdata/subdir/
+          dbt_project_dir: ./testdata/dbt
 
   test-pr-review:
     if: github.event_name == 'pull_request'

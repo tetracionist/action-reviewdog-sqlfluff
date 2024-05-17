@@ -14,9 +14,21 @@ pip install -r requirements.txt
 
 misspell -locale="${INPUT_LOCALE}" . \
   | reviewdog -efm="%f:%l:%c: %m" \
-      -name="linter-name (misspell)" \
+      -name="sqfluff (misspell)" \
       -reporter="${INPUT_REPORTER:-github-pr-check}" \
       -filter-mode="${INPUT_FILTER_MODE}" \
       -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
       -level="${INPUT_LEVEL}" \
       ${INPUT_REVIEWDOG_FLAGS}
+
+sqlfluff fix \
+  --templater ${INPUT_SQLFLUFF_TEMPLATER} \
+  --dialect ${INPUT_SQLFLUFF_DIALECT} \
+  | reviewdog -efm="%f:%l:%c: %m" \
+      -name="sqlfluff (sqlfluff-fix)" \
+      -reporter="${INPUT_REPORTER:-github-pr-check}" \
+      -filter-mode="${INPUT_FILTER_MODE}" \
+      -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
+      -level="${INPUT_LEVEL}" \
+      ${INPUT_REVIEWDOG_FLAGS}
+
