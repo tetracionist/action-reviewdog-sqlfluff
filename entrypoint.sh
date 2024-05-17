@@ -18,7 +18,7 @@ sqlfluff lint --templater ${INPUT_SQLFLUFF_TEMPLATER} --dialect ${INPUT_SQLFLUFF
 echo "name=sqlfluff-results::$(cat <"sqlfluff_lint_results.rdjson" | jq -r -c '.')" >> $GITHUB_OUTPUT # Convert to a single line
 
 lint_results_rdjson="sqlfluff_lint_results.rdjson"
-cat <"$lint_results" |
+cat <"sqlfluff_lint_results.rdjson" |
   jq -r -f "${SCRIPT_DIR}/to-rdjson.jq" |
   tee >"$lint_results_rdjson"
 
