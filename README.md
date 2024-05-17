@@ -1,4 +1,4 @@
-# action-template
+# action-reviewdog-sqlfluff
 
 <!-- TODO: replace reviewdog/action-template with your repo name -->
 [![Test](https://github.com/reviewdog/action-template/workflows/Test/badge.svg)](https://github.com/reviewdog/action-template/actions?query=workflow%3ATest)
@@ -22,8 +22,6 @@ reviewdog actions.
 This repo contains a sample action to run [misspell](https://github.com/client9/misspell).
 
 ## Input
-
-<!-- TODO: update -->
 ```yaml
 inputs:
   github_token:
@@ -32,6 +30,7 @@ inputs:
   workdir:
     description: 'Working directory relative to the root directory.'
     default: '.'
+
   ### Flags for reviewdog ###
   level:
     description: 'Report level for reviewdog [info,warning,error]'
@@ -52,10 +51,31 @@ inputs:
   reviewdog_flags:
     description: 'Additional reviewdog flags'
     default: ''
-  ### Flags for <linter-name> ###
-  locale:
-    description: '-locale flag of misspell. (US/UK)'
-    default: ''
+
+  ### Flags for dbt ###
+  dbt_adapter_version:
+    default: 1.7.4
+  dbt_core_version: 
+    default: 1.7.14
+  dbt_profiles_dir:
+    default: .
+  dbt_project_dir:
+    default: ./dbt
+  dbt_target:
+    default: snowflake
+
+  ### Flags for sqlfluff ###
+  sqlfluff_dialect: 
+    description: dialect of the sql
+    default: snowflake
+  sqlfluff_mode:
+    description: fix/lint (fix shows suggestion, lint reports violations)
+    default: lint
+  sqlfluff_templater:
+    description: templater for the sql
+    default: dbt
+  sqlfluff_version:
+    default: 3.0.6
 ```
 
 ## Usage

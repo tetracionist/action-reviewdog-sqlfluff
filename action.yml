@@ -31,27 +31,32 @@ inputs:
     default: ''
 
   ### Flags for dbt ###
-  dbt_core_version: 
-    default: 1.8.0
   dbt_adapter_version:
-    default: 1.8.1
+    default: 1.7.4
+  dbt_core_version: 
+    default: 1.7.14
+  dbt_profiles_dir:
+    default: .
   dbt_project_dir:
     default: ./dbt
+  dbt_target:
+    default: snowflake
 
   ### Flags for sqlfluff ###
-  sqlfluff_version:
-    default: 3.0.6
-  sqlfluff_templater:
-    description: templater for the sql
-    default: dbt
+  
+  
   sqlfluff_dialect: 
     description: dialect of the sql
     default: snowflake
+  sqlfluff_mode:
+    description: fix/lint (fix shows suggestion, lint reports violations)
+    default: lint
+  sqlfluff_templater:
+    description: templater for the sql
+    default: dbt
+  sqlfluff_version:
+    default: 3.0.6
 
-  ### Flags for misspellings ###
-  locale:
-    description: '-locale flag of misspell. (US/UK)'
-    default: ''
 runs:
   using: 'docker'
   image: 'Dockerfile'

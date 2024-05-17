@@ -1,2 +1,5 @@
 # Folders to ignore
 .vscode/
+.venv/
+lint_output.json
+*.rdjsonl

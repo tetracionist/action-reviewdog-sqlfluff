@@ -1,0 +1,5 @@
+target/
+.user.yml
+package-lock.yml
+logs/
+dbt_packages/
