@@ -9,11 +9,12 @@ jobs:
     name: runner / sqlfluff (github-check)
     runs-on: ubuntu-latest
     env:
-      ACCOUNT: {{ secrets.ACCOUNT }}
-      USERNAME: {{ secrets.USERNAME }}
-      PASSWORD: {{ secrets.PASSWORD }}
-      DATABASE: {{ secrets.DATABASE }}
-      SCHEMA: {{ secrets.SCHEMA }}
+      ACCOUNT: ${{ secrets.ACCOUNT }}
+      USERNAME: ${{ secrets.USERNAME }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      DATABASE: ${{ secrets.DATABASE }}
+      SCHEMA: ${{ secrets.SCHEMA }}
+      WAREHOUSE: ${{ secrets.WAREHOUSE }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./
@@ -28,11 +29,12 @@ jobs:
     name: runner / sqlfluff (github-pr-check)
     runs-on: ubuntu-latest
     env:
-      ACCOUNT: {{ secrets.ACCOUNT }}
-      USERNAME: {{ secrets.USERNAME }}
-      PASSWORD: {{ secrets.PASSWORD }}
-      DATABASE: {{ secrets.DATABASE }}
-      SCHEMA: {{ secrets.SCHEMA }}
+      ACCOUNT: ${{ secrets.ACCOUNT }}
+      USERNAME: ${{ secrets.USERNAME }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      DATABASE: ${{ secrets.DATABASE }}
+      SCHEMA: ${{ secrets.SCHEMA }}
+      WAREHOUSE: ${{ secrets.WAREHOUSE }}
 
     steps:
       - uses: actions/checkout@v4
@@ -48,11 +50,12 @@ jobs:
     name: runner / sqlfluff (github-pr-review)
     runs-on: ubuntu-latest
     env:
-      ACCOUNT: {{ secrets.ACCOUNT }}
-      USERNAME: {{ secrets.USERNAME }}
-      PASSWORD: {{ secrets.PASSWORD }}
-      DATABASE: {{ secrets.DATABASE }}
-      SCHEMA: {{ secrets.SCHEMA }}
+      ACCOUNT: ${{ secrets.ACCOUNT }}
+      USERNAME: ${{ secrets.USERNAME }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      DATABASE: ${{ secrets.DATABASE }}
+      SCHEMA: ${{ secrets.SCHEMA }}
+      WAREHOUSE: ${{ secrets.WAREHOUSE }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./
