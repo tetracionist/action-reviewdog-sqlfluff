@@ -13,7 +13,7 @@ fi
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
 
-
+cd "${GITHUB_WORKSPACE}/${DBT_PROJECT_DIR}" 
 sqlfluff fix \
   --templater ${INPUT_SQLFLUFF_TEMPLATER} \
   --dialect ${INPUT_SQLFLUFF_DIALECT} \
