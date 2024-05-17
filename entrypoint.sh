@@ -13,18 +13,10 @@ export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
 dbt clean && dbt deps
 
-sqlfluff lint --templater ${INPUT_SQLFLUFF_TEMPLATER} --dialect ${INPUT_SQLFLUFF_DIALECT} --disable-progress-bar . --format json --logger linter --write-output sqlfluff_lint_results.rdjson
-
-echo "name=sqlfluff-results::$(cat <"sqlfluff_lint_results.rdjson" | jq -r -c '.')" >> $GITHUB_OUTPUT # Convert to a single line
-
-lint_results_rdjson="sqlfluff_lint_results.rdjson"
-cat <"sqlfluff_lint_results.rdjson" |
-  jq -r -f "${SCRIPT_DIR}/to-rdjson.jq" |
-  tee >"$lint_results_rdjson"
-
-cat <lint_results_rdjson | reviewdog -f=rdjson \
+sqlfluff lint --templater ${INPUT_SQLFLUFF_TEMPLATER} --dialect ${INPUT_SQLFLUFF_DIALECT} --disable-progress-bar . --format github-annotations-native \
+| reviewdog \
     -name="sqlfluff (sqlfluff-fix)" \
-    -reporter="${INPUT_REPORTER:-github-pr-check}" \
+    -reporter="${INPUT_REPORTER:-github-pr-annotations}" \
     -filter-mode="${INPUT_FILTER_MODE}" \
     -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
     -level="${INPUT_LEVEL}" \
