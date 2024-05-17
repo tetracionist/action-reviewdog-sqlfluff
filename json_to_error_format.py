@@ -1,5 +1,5 @@
 import json
-import sys
+import argparse
 
 def preprocess_file(filename):
     # Read the file and skip the first line if it's invalid
@@ -42,13 +42,12 @@ def transform_to_rdjsonl(lint_output, dbt_project_dir):
     return rdjsonl_lines
 
 def main():
-    if len(sys.argv) != 3:
-        print("Usage: python convert_to_rdjsonl.py <filename>")
-        sys.exit(1)
-    
-    filename = sys.argv[1]
-    dbt_project_dir = sys.argv[2]
-    json_content = preprocess_file(filename)
+    parser = argparse.ArgumentParser(description="Convert SQL lint output to rdjsonl format")
+    parser.add_argument("filename", help="Path to the JSON lint output file", default="lint_output.json")
+    parser.add_argument("dbt_project_dir", help="Path to the DBT project directory")
+    args = parser.parse_args()
+
+    json_content = preprocess_file(args.filename)
     lint_output = json.loads(json_content)
     rdjsonl_output = transform_to_rdjsonl(lint_output)
     

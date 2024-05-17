@@ -15,7 +15,9 @@ dbt clean && dbt deps
 
 sqlfluff lint --templater ${INPUT_SQLFLUFF_TEMPLATER} --dialect ${INPUT_SQLFLUFF_DIALECT} --disable-progress-bar . --format json > ../lint_output.json
 
-python ../json_to_error_format.py ../lint_output.json ${INPUT_DBT_PROJECT_DIR} \ 
+cd "${GITHUB_WORKSPACE}" || exit
+
+python ../json_to_error_format.py --dbt_project_dir "${INPUT_DBT_PROJECT_DIR}" \ 
 | reviewdog -efm="%f:%l:%c: %m" \
     -name="sqlfluff (sqlfluff-fix)" \
     -reporter="github-pr-check" \
