@@ -30,7 +30,7 @@ if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then
       ${INPUT_REVIEWDOG_FLAGS}
 
 elif [[ "${INPUT_SQLFLUFF_MODE}" == "fix" ]]; then
-  sqlfluff fix --templater dbt --dialect snowflake --disable-progress-bar .
+  sqlfluff fix --templater "${INPUT_SQLFLUFF_TEMPLATER}" --dialect "${INPUT_SQLFLUFF_DIALECT}" --disable-progress-bar .
 
   TMPFILE=$(mktemp)
   git diff >"${TMPFILE}"

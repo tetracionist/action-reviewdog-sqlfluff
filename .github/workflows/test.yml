@@ -136,3 +136,4 @@ jobs:
           level: error
           reporter: github-pr-review
           sqlfluff_mode: fix
+          reviewdog_flags: -fail-on-error
