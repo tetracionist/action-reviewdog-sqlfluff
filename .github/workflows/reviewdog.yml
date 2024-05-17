@@ -20,7 +20,7 @@ jobs:
         with:
           github_token: ${{ secrets.github_token }}
           reporter: ${{ steps.reporter.outputs.value }}
-          level: warning
+          level: error
 
   hadolint:
     name: runner / hadolint
@@ -50,6 +50,7 @@ jobs:
           reporter: github-check
           level: warning
           locale: "UK"
+          exclude: testdata/dbt
 
   alex:
     name: runner / alex
