@@ -1,26 +1,41 @@
 #!/bin/sh
 
+# create and activate a virtual environment and install the requirements
+# version numbers will be based off of dbt_adapter_version, dbt_core_version and sqfluff_version
+# adapter that will install will be based off the dbt_adapter 
 python3 -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
 
+# Navigate to the dbt project directory
 if [ -n "${GITHUB_WORKSPACE}" ] ; then
   cd "${GITHUB_WORKSPACE}/${INPUT_DBT_PROJECT_DIR}" || exit
   git config --global --add safe.directory "${GITHUB_WORKSPACE}" || exit 1
 fi
 
+# create an environment variable that we can use to connect to Reviewdog
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
+# install any dbt dependencies
 dbt clean && dbt deps
 
 
 if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then
-  sqlfluff lint --templater "${INPUT_SQLFLUFF_TEMPLATER}" --dialect "${INPUT_SQLFLUFF_DIALECT}" --disable-progress-bar . --format json > "${GITHUB_WORKSPACE}"/lint_output.json
 
+  # run linting and output to a JSON file
+  sqlfluff lint --templater "${INPUT_SQLFLUFF_TEMPLATER}" \ 
+    --dialect "${INPUT_DBT_ADAPTER}" \
+    --disable-progress-bar . \
+    --format json > "${GITHUB_WORKSPACE}"/lint_output.json
+
+  # navigate back to the top of the workspace
   cd "${GITHUB_WORKSPACE}" || exit
 
+  # run a python script to convert into a JSON structure that Reviewdog can understand
+  # the format will use is rdjsonl – https://github.com/reviewdog/reviewdog/tree/master/proto/rdf#rdjsonl
   python -m json_to_rdjsonl --dbt_project_dir "${INPUT_DBT_PROJECT_DIR}" 
 
+  # feed this into Reviewdog and this will now create annotations
   cat < "${GITHUB_WORKSPACE}"/"violations.rdjsonl"| reviewdog -f=rdjsonl \
       -name="sqlfluff (sqlfluff-lint)" \
       -reporter="${INPUT_REPORTER:-github-pr-check}" \
@@ -30,10 +45,16 @@ if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then
       ${INPUT_REVIEWDOG_FLAGS}
 
 elif [[ "${INPUT_SQLFLUFF_MODE}" == "fix" ]]; then
-  sqlfluff fix --templater "${INPUT_SQLFLUFF_TEMPLATER}" --dialect "${INPUT_SQLFLUFF_DIALECT}" .
 
+  # for fix mode run the fix command
+  sqlfluff fix --templater "${INPUT_SQLFLUFF_TEMPLATER}" \
+    --dialect "${INPUT_DBT_ADAPTER}" .
+
+  # navigate to the top of the workspace or we will not be able to 
   cd "${GITHUB_WORKSPACE}" || exit
 
+  # send the git working changes to a temporary file and then discard any working changes
+  # Reviewdog use the differences between these to generate comments on linting violations and suggest fixes 
   TMPFILE=$(mktemp)
   git diff >"${TMPFILE}"
   git stash -u && git stash drop
@@ -42,6 +63,5 @@ elif [[ "${INPUT_SQLFLUFF_MODE}" == "fix" ]]; then
     -f.diff.strip=1 \
     -reporter="${INPUT_REPORTER:-github-pr-review}" < "${TMPFILE}"
     
-
 fi
 
