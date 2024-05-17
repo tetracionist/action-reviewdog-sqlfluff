@@ -31,7 +31,7 @@ inputs:
     default: ''
 
   ### Flags for dbt ###
-    dbt_adapter: 
+  dbt_adapter: 
     description: |
       The dbt adapter is the dialect (e.g. snowflake)
       This will install the correct adapter version of dbt
