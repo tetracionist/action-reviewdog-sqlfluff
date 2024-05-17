@@ -56,6 +56,37 @@ def transform_to_rdjsonl(lint_output, dbt_project_dir):
             rdjsonl_lines.append(rdjsonl_line)
     return rdjsonl_lines
 
+def merge_consecutive_suggestions(suggestions):
+    merged_suggestions = []
+    current_range = None
+    current_text = ""
+
+    for suggestion in suggestions:
+        if current_range is None:
+            # Initialize current range and text with the first suggestion
+            current_range = suggestion["range"]
+            current_text = suggestion["text"]
+        elif suggestion["text"] == current_text:
+            # Extend the current range if the text is the same as the previous suggestion
+            current_range["end"] = suggestion["range"]["end"]
+        else:
+            # Append the merged suggestion and reset current range and text
+            merged_suggestions.append({
+                "range": current_range,
+                "text": current_text
+            })
+            current_range = suggestion["range"]
+            current_text = suggestion["text"]
+
+    # Append the last merged suggestion
+    if current_range is not None:
+        merged_suggestions.append({
+            "range": current_range,
+            "text": current_text
+        })
+
+    return merged_suggestions
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -75,6 +106,14 @@ def main():
     json_content = preprocess_file(args.filename)
     lint_output = json.loads(json_content)
     rdjsonl_output = transform_to_rdjsonl(lint_output, args.dbt_project_dir)
+
+    for rdjsonl_entry in rdjsonl_output:
+        suggestions = rdjsonl_entry["suggestions"]
+        merged_suggestions = merge_consecutive_suggestions(suggestions)
+        if merged_suggestions:
+            rdjsonl_entry["suggestions"] = merged_suggestions[:1]
+    
+
 
     with open("violations.rdjsonl", "w") as outfile:
         for entry in rdjsonl_output:
