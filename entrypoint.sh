@@ -17,12 +17,13 @@ sqlfluff lint --templater ${INPUT_SQLFLUFF_TEMPLATER} --dialect ${INPUT_SQLFLUFF
 
 cd "${GITHUB_WORKSPACE}" || exit
 
-python -m json_to_error_format --dbt_project_dir "${INPUT_DBT_PROJECT_DIR}" \ 
-| reviewdog -efm="%f:%l:%c: %m" \
-    -name="sqlfluff (sqlfluff-fix)" \
-    -reporter="github-pr-check" \
-    -filter-mode="${INPUT_FILTER_MODE}" \
-    -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
-    -level="${INPUT_LEVEL}" \
-    ${INPUT_REVIEWDOG_FLAGS}
+python -m json_to_error_format --dbt_project_dir "${INPUT_DBT_PROJECT_DIR}" 
+
+# | reviewdog -efm="%f:%l:%c: %m" \
+#     -name="sqlfluff (sqlfluff-fix)" \
+#     -reporter="github-pr-check" \
+#     -filter-mode="${INPUT_FILTER_MODE}" \
+#     -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
+#     -level="${INPUT_LEVEL}" \
+#     ${INPUT_REVIEWDOG_FLAGS}
 
