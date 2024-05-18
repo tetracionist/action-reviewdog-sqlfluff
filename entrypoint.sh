@@ -3,11 +3,10 @@
 # use git to find any changed sql files
 git config --global --add safe.directory "${GITHUB_WORKSPACE}"
 
-git fetch --prune --unshallow --no-tags
+
 changed_files=$(cd "${INPUT_DBT_PROJECT_DIR}" && git diff --name-only --diff-filter=AM --relative \
   "origin/$GITHUB_BASE_REF" $GITHUB_SHA -- '*.sql')
 
-git stash -u && git stash drop
 
 
 # if we find no changed files then terminate the program 
