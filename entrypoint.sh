@@ -14,7 +14,11 @@ if [ -n "${GITHUB_WORKSPACE}" ] ; then
 fi
 
 # get a list of changed files between this one and the master branch
-ls -R .
+changed_files=git diff --name-only --diff-filter=AM "${INPUTS_GITHUB_BASE_REF}" origin/main -- '*.sql'
+if [ -z "$changed_files" ]; then
+  echo "No SQL files changed or added"
+  exit 0
+fi
 
 
 # create an environment variable that we can use to connect to Reviewdog
@@ -22,8 +26,6 @@ export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
 # install any dbt dependencies
 dbt clean --profiles-dir "${INPUT_DBT_PROFILES_DIR}" && dbt deps --profiles-dir "${INPUT_DBT_PROFILES_DIR}" 
-
-
 
 
 if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then

@@ -8,6 +8,10 @@ inputs:
   workdir:
     description: 'Working directory relative to the root directory.'
     default: '.'
+  github_base_ref:
+    description: "Pull request target branch name"
+    required: false
+    default: "${{ github.base_ref }}"
 
   ### Flags for reviewdog ###
   level:
