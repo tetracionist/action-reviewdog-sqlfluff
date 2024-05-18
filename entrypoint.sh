@@ -72,6 +72,7 @@ elif [[ "${INPUT_SQLFLUFF_MODE}" == "fix" ]]; then
   # Reviewdog use the differences between these to generate comments on linting violations and suggest fixes 
   TMPFILE=$(mktemp)
   git diff >"${TMPFILE}"
+  cat "${TMPFILE}"
   git stash -u && git stash drop
   reviewdog -name="sqlfluff (sqlfluff-fix)" \
     -f=diff \
