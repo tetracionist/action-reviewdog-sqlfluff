@@ -2,7 +2,7 @@
 
 # use git to find any changed sql files
 git config --global --add safe.directory "${GITHUB_WORKSPACE}"
-git fetch origin $GITHUB_BASE_REF
+git fetch origin $GITHUB_HEAD_REF
 
 changed_files=$(cd "${GITHUB_WORKSPACE}/${INPUT_DBT_PROJECT_DIR}" && git diff --name-only --diff-filter=AM --relative \
   "origin/$GITHUB_BASE_REF" $GITHUB_SHA -- '*.sql')
