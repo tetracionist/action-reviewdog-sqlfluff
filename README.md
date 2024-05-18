@@ -1,5 +1,11 @@
 # action-reviewdog-sqlfluff
 
+This GitHub Action enables you to lint and fix SQL code via [SQLFluff](https://sqlfluff.com/) for different dialects with the dbt templater. 
+Primarily I have favoured the Snowflake dialect, but there is also support for other dialects and can be extended by using the profiles.yml located in the `testdata/dbt` folder
+
+If using multiple dialects, for example you might Materialize for real-time data and Snowflake for batch, then please create two separate workflows using this GitHub action. 
+I will add examples below on how this can be done. 
+
 <!-- TODO: replace reviewdog/action-template with your repo name -->
 [![Test](https://github.com/reviewdog/action-template/workflows/Test/badge.svg)](https://github.com/reviewdog/action-template/actions?query=workflow%3ATest)
 [![reviewdog](https://github.com/reviewdog/action-template/workflows/reviewdog/badge.svg)](https://github.com/reviewdog/action-template/actions?query=workflow%3Areviewdog)
@@ -18,14 +24,7 @@ _Note: that you need to fix linting violations in the base commit first_
 ![fix-comment](https://github.com/tetracionist/action-reviewdog-sqlfluff/assets/40890820/93b97c79-b1f0-4a56-b9dd-3bf3807ad64e)
 
 
-This GitHub Action enables you to lint and fix SQL code via [SQLFluff](https://sqlfluff.com/) for different dialects with the dbt templater. 
-Primarily I have favoured the Snowflake dialect, but there is also support for other dialects and can be extended by using the profiles.yml located in the `testdata/dbt` folder
 
-If using multiple dialects, for example you might Materialize for real-time data and Snowflake for batch, then please create two separate workflows using this GitHub action. 
-I will add examples below on how this can be done. 
-
-Note: If you have existing linting violations in the base commit of a pull request, the action will not create annotations.
-Instead, it will make comments on the base commit and will not give you suggestions. 
 
 ## Input
 ```yaml
