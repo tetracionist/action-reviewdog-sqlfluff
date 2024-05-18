@@ -7,6 +7,8 @@ git fetch --prune --unshallow --no-tags
 changed_files=$(cd "${INPUT_DBT_PROJECT_DIR}" && git diff --name-only --diff-filter=AM --relative \
   "origin/$GITHUB_BASE_REF" $GITHUB_SHA -- '*.sql')
 
+git stash -u && git stash drop
+
 
 # if we find no changed files then terminate the program 
 if [ -z "$changed_files" ]; then
