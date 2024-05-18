@@ -1,19 +1,7 @@
 #!/bin/sh
 
-# use git to find any changed sql files
-git config --global --add safe.directory "${GITHUB_WORKSPACE}"
-git fetch origin $GITHUB_HEAD_REF $GITHUB_BASE_REF
-
-changed_files=$(cd "${GITHUB_WORKSPACE}/${INPUT_DBT_PROJECT_DIR}" && git diff --name-only --diff-filter=AM --relative \
-  "origin/$GITHUB_BASE_REF" "origin/$GITHUB_HEAD_REF" -- '*.sql')
-
-
-
-# if we find no changed files then terminate the program 
-if [ -z "$changed_files" ]; then
-  echo "No SQL files changed or added"
-  exit 0
-fi
+cd "${GITHUB_WORKSPACE}/${INPUT_DBT_PROJECT_DIR}" || exit
+git config --global --add safe.directory "${GITHUB_WORKSPACE}" || exit
 
 
 # create and activate a virtual environment and install the requirements
@@ -41,7 +29,7 @@ if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then
   # run linting and output to a JSON file
   sqlfluff lint --templater "${INPUT_SQLFLUFF_TEMPLATER}" \
     --dialect "${INPUT_DBT_ADAPTER}" \
-    --disable-progress-bar $changed_files \
+    --disable-progress-bar . \
     --format json > "${GITHUB_WORKSPACE}"/lint_output.json
 
   # navigate back to the top of the workspace
@@ -49,7 +37,7 @@ if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then
 
   # run a python script to convert into a JSON structure that Reviewdog can understand
   # the format will use is rdjsonl – https://github.com/reviewdog/reviewdog/tree/master/proto/rdf#rdjsonl
-  python -m json_to_rdjsonl --dbt_project_dir "${INPUT_DBT_PROJECT_DIR}" 
+  python -m json_to_rdjsonl --dbt_project_dir "${INPUT_DBT_PROJECT_DIR}" || exit
 
   # feed this into Reviewdog and this will now create annotations
   cat < "${GITHUB_WORKSPACE}"/"violations.rdjsonl"| reviewdog -f=rdjsonl \
@@ -64,7 +52,7 @@ elif [[ "${INPUT_SQLFLUFF_MODE}" == "fix" ]]; then
 
   # for fix mode run the fix command
   sqlfluff fix --templater "${INPUT_SQLFLUFF_TEMPLATER}" \
-    --dialect "${INPUT_DBT_ADAPTER}" $changed_files
+    --dialect "${INPUT_DBT_ADAPTER}" .
 
   # navigate to the top of the workspace or we will not be able to 
   cd "${GITHUB_WORKSPACE}" || exit
