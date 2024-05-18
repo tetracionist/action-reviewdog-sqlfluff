@@ -15,7 +15,7 @@ if [ -n "${GITHUB_WORKSPACE}" ] ; then
   git config --global --add safe.directory "${GITHUB_WORKSPACE}" || exit 1
 fi
 
-changed_files=git diff -z --name-only --diff-filter=AM "${INPUTS_GITHUB_BASE_REF}" origin/main -- '*.sql'
+changed_files=$(git diff -z --name-only --diff-filter=AM "${INPUTS_GITHUB_BASE_REF}" origin/main -- '*.sql')
 if [ -z "$changed_files" ]; then
   echo "No SQL files changed or added"
   exit 0
