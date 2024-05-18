@@ -4,7 +4,7 @@
 git config --global --add safe.directory "${GITHUB_WORKSPACE}"
 
 
-changed_files=$(cd "${INPUT_DBT_PROJECT_DIR}" && git diff --name-only --diff-filter=AM --relative \
+changed_files=$(cd "${GITHUB_WORKSPACE}/${INPUT_DBT_PROJECT_DIR}" && git diff --name-only --diff-filter=AM --relative \
   "origin/$GITHUB_BASE_REF" $GITHUB_SHA -- '*.sql')
 
 
