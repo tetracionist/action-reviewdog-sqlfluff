@@ -3,7 +3,12 @@
 # use git to find any changed sql files
 git config --global --add safe.directory "${GITHUB_WORKSPACE}"
 git fetch --prune --unshallow --no-tags
-changed_files=$(cd "${INPUT_DBT_PROJECT_DIR}" && git diff -z --name-only --diff-filter=AM --relative="${INPUT_DBT_PROJECT_DIR}" "origin/${GITHUB_HEAD_REF}" "origin/${GITHUB_BASE_REF}"  -- '*.sql')
+changed_files=$(cd "$INPUT_DBT_PROJECT_DIR" && \
+  git diff -z --name-only --diff-filter=AM \
+  "origin/$GITHUB_HEAD_REF" "origin/$GITHUB_BASE_REF" -- '*.sql')
+
+
+# if we find no changed files then terminate the program 
 if [ -z "$changed_files" ]; then
   echo "No SQL files changed or added"
   exit 0
