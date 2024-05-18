@@ -8,10 +8,14 @@
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/reviewdog/action-template?logo=github&sort=semver)](https://github.com/reviewdog/action-template/releases)
 [![action-bumpr supported](https://img.shields.io/badge/bumpr-supported-ff69b4?logo=github&link=https://github.com/haya14busa/action-bumpr)](https://github.com/haya14busa/action-bumpr)
 
-![github-pr-review demo](https://github.com/tetracionist/action-reviewdog-sqlfluff/assets/40890820/ad121339-7b91-44a0-bbad-29d6a12e5086)
+## Get SQLFluff linting code violations as comments or annotations
+_Note: any linting violations in the base commit will leave comments in the base commit, annotations will not work_ 
 ![linting-check-comment](https://github.com/tetracionist/action-reviewdog-sqlfluff/assets/40890820/4574e1d0-d63d-4df7-b1ed-9356f81b5395)
 ![linting check annotations](https://github.com/tetracionist/action-reviewdog-sqlfluff/assets/40890820/1916c34d-c2fc-46c9-905c-b2dbcf401d27)
 
+## Get SQLFluff fix suggestions as comments 
+_Note: that you need to fix linting violations in the base commit first_
+![fix-comment](https://github.com/tetracionist/action-reviewdog-sqlfluff/assets/40890820/93b97c79-b1f0-4a56-b9dd-3bf3807ad64e)
 
 
 This GitHub Action enables you to lint and fix SQL code via [SQLFluff](https://sqlfluff.com/) for different dialects with the dbt templater. 
