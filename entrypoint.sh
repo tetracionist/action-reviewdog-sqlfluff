@@ -37,6 +37,8 @@ elif [[ "${INPUT_SQLFLUFF_MODE}" == "fix" ]]; then
   TMPFILE=$(mktemp)
   git diff >"${TMPFILE}"
   git stash -u && git stash drop
+
+  cat ${TMPFILE}
   reviewdog -name="sqlfluff (sqlfluff-fix)" \
     -f=diff \
     -f.diff.strip=1 \
