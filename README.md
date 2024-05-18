@@ -8,16 +8,20 @@
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/reviewdog/action-template?logo=github&sort=semver)](https://github.com/reviewdog/action-template/releases)
 [![action-bumpr supported](https://img.shields.io/badge/bumpr-supported-ff69b4?logo=github&link=https://github.com/haya14busa/action-bumpr)](https://github.com/haya14busa/action-bumpr)
 
-![github-pr-review demo](https://user-images.githubusercontent.com/3797062/73162963-4b8e2b00-4132-11ea-9a3f-f9c6f624c79f.png)
-![github-pr-check demo](https://user-images.githubusercontent.com/3797062/73163032-70829e00-4132-11ea-8481-f213a37db354.png)
+![github-pr-review demo](https://github.com/tetracionist/action-reviewdog-sqlfluff/assets/40890820/ad121339-7b91-44a0-bbad-29d6a12e5086)
+![linting-check-comment](https://github.com/tetracionist/action-reviewdog-sqlfluff/assets/40890820/4574e1d0-d63d-4df7-b1ed-9356f81b5395)
+![linting check annotations](https://github.com/tetracionist/action-reviewdog-sqlfluff/assets/40890820/1916c34d-c2fc-46c9-905c-b2dbcf401d27)
 
-This GitHub Action enables you to lint and fix SQL code via [SQLFluff]() for different dialects. 
-Primarily I have favoured Snowflake dialects, but there is also support for other dialects and can be extended by using the profiles.yml located in the `testdata/dbt` folder
+
+
+This GitHub Action enables you to lint and fix SQL code via [SQLFluff](https://sqlfluff.com/) for different dialects with the dbt templater. 
+Primarily I have favoured the Snowflake dialect, but there is also support for other dialects and can be extended by using the profiles.yml located in the `testdata/dbt` folder
 
 If using multiple dialects, for example you might Materialize for real-time data and Snowflake for batch, then please create two separate workflows using this GitHub action. 
 I will add examples below on how this can be done. 
 
-
+Note: If you have existing linting violations in the base commit of a pull request, the action will not create annotations.
+Instead, it will make comments on the base commit and will not give you suggestions. 
 
 ## Input
 ```yaml
@@ -120,7 +124,7 @@ jobs:
       WAREHOUSE: ${{ secrets.WAREHOUSE }}
     steps:
       - uses: actions/checkout@v4
-      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.1
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.2
         with:
           github_token: ${{ secrets.github_token }}
           dbt_project_dir: ./testdata/dbt
@@ -148,7 +152,7 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
-      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.1
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.2
         with:
           github_token: ${{ secrets.github_token }}
           dbt_project_dir: ./testdata/dbt
@@ -179,7 +183,7 @@ jobs:
       WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
     steps:
       - uses: actions/checkout@v4
-      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.1
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.2
         with:
           github_token: ${{ secrets.github_token }}
           dbt_project_dir: ./testdata/dbt
@@ -202,7 +206,7 @@ jobs:
       CLUSTER: ${{ secrets.MATERIALIZE_CLUSTER }}"
     steps:
       - uses: actions/checkout@v4
-      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.1
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.2
         with:
           github_token: ${{ secrets.github_token }}
           dbt_adapter: materialize
@@ -229,7 +233,7 @@ jobs:
       WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
     steps:
       - uses: actions/checkout@v4
-      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.1
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.2
         with:
           github_token: ${{ secrets.github_token }}
           dbt_project_dir: ./testdata/dbt
@@ -252,7 +256,7 @@ jobs:
       CLUSTER: ${{ secrets.MATERIALIZE_CLUSTER }}"
     steps:
       - uses: actions/checkout@v4
-      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.1
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.2
         with:
           github_token: ${{ secrets.github_token }}
           dbt_adapter: materialize
