@@ -38,7 +38,7 @@ dbt clean --profiles-dir "${INPUT_DBT_PROFILES_DIR}" && dbt deps --profiles-dir 
 if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then
 
   # run linting and output to a JSON file
-  sqlfluff lint --templater "${INPUT_SQLFLUFF_TEMPLATER}" \ 
+  sqlfluff lint --templater "${INPUT_SQLFLUFF_TEMPLATER}" \
     --dialect "${INPUT_DBT_ADAPTER}" \
     --disable-progress-bar $changed_files \
     --format json > "${GITHUB_WORKSPACE}"/lint_output.json
