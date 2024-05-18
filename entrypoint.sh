@@ -13,6 +13,14 @@ if [ -n "${GITHUB_WORKSPACE}" ] ; then
   git config --global --add safe.directory "${GITHUB_WORKSPACE}" || exit 1
 fi
 
+# get a list of changed files between this one and the master branch
+CHANGED_FILES=git diff --name-only --diff-filter=AM origin/main -- '*.sql'
+if [ -z "$CHANGED_FILES" ]; then
+  echo "No SQL files changed or added"
+  exit 0
+fi
+
+
 # create an environment variable that we can use to connect to Reviewdog
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
