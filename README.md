@@ -126,7 +126,7 @@ jobs:
       WAREHOUSE: ${{ secrets.WAREHOUSE }}
     steps:
       - uses: actions/checkout@v4
-      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.2
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.2.0
         with:
           github_token: ${{ secrets.github_token }}
           dbt_project_dir: ./testdata/dbt
@@ -154,7 +154,7 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
-      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.2
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.2.0
         with:
           github_token: ${{ secrets.github_token }}
           dbt_project_dir: ./testdata/dbt
@@ -185,7 +185,7 @@ jobs:
       WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
     steps:
       - uses: actions/checkout@v4
-      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.2
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.2.0
         with:
           github_token: ${{ secrets.github_token }}
           dbt_project_dir: ./testdata/dbt
@@ -208,7 +208,7 @@ jobs:
       CLUSTER: ${{ secrets.MATERIALIZE_CLUSTER }}"
     steps:
       - uses: actions/checkout@v4
-      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.2
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.2.0
         with:
           github_token: ${{ secrets.github_token }}
           dbt_adapter: materialize
@@ -235,7 +235,7 @@ jobs:
       WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
     steps:
       - uses: actions/checkout@v4
-      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.2
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.2.0
         with:
           github_token: ${{ secrets.github_token }}
           dbt_project_dir: ./testdata/dbt
@@ -258,7 +258,7 @@ jobs:
       CLUSTER: ${{ secrets.MATERIALIZE_CLUSTER }}"
     steps:
       - uses: actions/checkout@v4
-      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.2
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.2.0
         with:
           github_token: ${{ secrets.github_token }}
           dbt_adapter: materialize
