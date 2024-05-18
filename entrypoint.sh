@@ -3,9 +3,8 @@
 # use git to find any changed sql files
 git config --global --add safe.directory "${GITHUB_WORKSPACE}"
 
-git_relative=$("${INPUT_DBT_PROJECT_DIR}" | cut -c 3-)
 git fetch --prune --unshallow --no-tags
-changed_files=$(git diff -z --name-only --diff-filter=AM --relative $git_relative \
+changed_files=$(cd "${INPUT_DBT_PROJECT_DIR}" && git diff -z --name-only --diff-filter=AM --relative \
   "origin/$GITHUB_HEAD_REF" "origin/$GITHUB_BASE_REF" -- '*.sql')
 
 
@@ -19,6 +18,8 @@ fi
 # create and activate a virtual environment and install the requirements
 # version numbers will be based off of dbt_adapter_version, dbt_core_version and sqfluff_version
 # adapter that will install will be based off the dbt_adapter 
+cd ${GITHUB_WORKSPACE} || exit
+
 python3 -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
