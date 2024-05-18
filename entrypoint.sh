@@ -14,11 +14,7 @@ if [ -n "${GITHUB_WORKSPACE}" ] ; then
 fi
 
 # get a list of changed files between this one and the master branch
-CHANGED_FILES=git diff --name-only --diff-filter=AM origin/main -- '*.sql'
-if [ -z "$CHANGED_FILES" ]; then
-  echo "No SQL files changed or added"
-  exit 0
-fi
+ls -R .
 
 
 # create an environment variable that we can use to connect to Reviewdog
@@ -28,12 +24,14 @@ export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 dbt clean --profiles-dir "${INPUT_DBT_PROFILES_DIR}" && dbt deps --profiles-dir "${INPUT_DBT_PROFILES_DIR}" 
 
 
+
+
 if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then
 
   # run linting and output to a JSON file
   sqlfluff lint --templater "${INPUT_SQLFLUFF_TEMPLATER}" \ 
     --dialect "${INPUT_DBT_ADAPTER}" \
-    --disable-progress-bar . \
+    --disable-progress-bar $changed_files \
     --format json > "${GITHUB_WORKSPACE}"/lint_output.json
 
   # navigate back to the top of the workspace
@@ -56,7 +54,7 @@ elif [[ "${INPUT_SQLFLUFF_MODE}" == "fix" ]]; then
 
   # for fix mode run the fix command
   sqlfluff fix --templater "${INPUT_SQLFLUFF_TEMPLATER}" \
-    --dialect "${INPUT_DBT_ADAPTER}" .
+    --dialect "${INPUT_DBT_ADAPTER}" $changed_files
 
   # navigate to the top of the workspace or we will not be able to 
   cd "${GITHUB_WORKSPACE}" || exit
