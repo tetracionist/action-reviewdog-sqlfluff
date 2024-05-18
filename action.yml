@@ -1,4 +1,4 @@
-name: 'Run sqlfluff with reviewdog'
+name: 'ReviewDog SQLFluff Linter'
 description: '🐶 Run sqlfluff with reviewdog on pull requests to improve code review experience.'
 author: 'Alexander Wornast'
 inputs:
