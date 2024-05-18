@@ -66,6 +66,11 @@ inputs:
       As of dbt version 1.8, the dbt-core version will need to be specified
       Henceforth I have added this as an input
     default: 1.7.14
+  dbt_profiles_dir:
+    description: | 
+      Will also need to set this up in the .sqlfluff file, needs to be relative to your dbt project directory
+      Recommend you copy the profiles_linter directory and place this in your dbt project
+    default: ./profiles_linter
   dbt_project_dir:
     description: This is where your dbt project directory is located
     default: ./testdata/dbt

@@ -17,7 +17,7 @@ fi
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
 # install any dbt dependencies
-dbt clean && dbt deps
+dbt clean && dbt deps --profiles-dir "${INPUT_DBT_PROFILES_DIR}" 
 
 
 if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then
@@ -62,6 +62,6 @@ elif [[ "${INPUT_SQLFLUFF_MODE}" == "fix" ]]; then
     -f=diff \
     -f.diff.strip=1 \
     -reporter="${INPUT_REPORTER:-github-pr-review}" < "${TMPFILE}"
-    
+
 fi
 
