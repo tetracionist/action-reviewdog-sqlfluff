@@ -1,18 +1,17 @@
 # action-reviewdog-sqlfluff
 
-This GitHub Action enables you to lint and fix SQL code via [SQLFluff](https://sqlfluff.com/) for different dialects with the dbt templater. 
-Primarily I have favoured the Snowflake dialect, but there is also support for other dialects and can be extended by using the profiles.yml located in the `testdata/dbt` folder
-
-If using multiple dialects, for example you might Materialize for real-time data and Snowflake for batch, then please create two separate workflows using this GitHub action. 
-I will add examples below on how this can be done. 
-
-<!-- TODO: replace reviewdog/action-template with your repo name -->
 [![Test](https://github.com/reviewdog/action-template/workflows/Test/badge.svg)](https://github.com/reviewdog/action-template/actions?query=workflow%3ATest)
 [![reviewdog](https://github.com/reviewdog/action-template/workflows/reviewdog/badge.svg)](https://github.com/reviewdog/action-template/actions?query=workflow%3Areviewdog)
 [![depup](https://github.com/reviewdog/action-template/workflows/depup/badge.svg)](https://github.com/reviewdog/action-template/actions?query=workflow%3Adepup)
 [![release](https://github.com/reviewdog/action-template/workflows/release/badge.svg)](https://github.com/reviewdog/action-template/actions?query=workflow%3Arelease)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/reviewdog/action-template?logo=github&sort=semver)](https://github.com/reviewdog/action-template/releases)
 [![action-bumpr supported](https://img.shields.io/badge/bumpr-supported-ff69b4?logo=github&link=https://github.com/haya14busa/action-bumpr)](https://github.com/haya14busa/action-bumpr)
+
+This GitHub Action enables you to lint and fix SQL code via [SQLFluff](https://sqlfluff.com/) for different dialects with the dbt templater. 
+Primarily I have favoured the Snowflake dialect, but there is also support for other dialects and can be extended by using the profiles.yml located in the `testdata/dbt` folder
+
+If using multiple dialects, for example you might Materialize for real-time data and Snowflake for batch, then please create two separate workflows using this GitHub action. 
+I will add examples below on how this can be done. 
 
 ## Get SQLFluff linting code violations as comments or annotations
 _Note: any linting violations in the base commit will leave comments in the base commit, annotations will not work_ 
@@ -127,7 +126,7 @@ jobs:
       WAREHOUSE: ${{ secrets.WAREHOUSE }}
     steps:
       - uses: actions/checkout@v4
-      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.2
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.2.0
         with:
           github_token: ${{ secrets.github_token }}
           dbt_project_dir: ./testdata/dbt
@@ -155,7 +154,7 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
-      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.2
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.2.0
         with:
           github_token: ${{ secrets.github_token }}
           dbt_project_dir: ./testdata/dbt
@@ -186,7 +185,7 @@ jobs:
       WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
     steps:
       - uses: actions/checkout@v4
-      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.2
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.2.0
         with:
           github_token: ${{ secrets.github_token }}
           dbt_project_dir: ./testdata/dbt
@@ -209,7 +208,7 @@ jobs:
       CLUSTER: ${{ secrets.MATERIALIZE_CLUSTER }}"
     steps:
       - uses: actions/checkout@v4
-      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.2
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.2.0
         with:
           github_token: ${{ secrets.github_token }}
           dbt_adapter: materialize
@@ -236,7 +235,7 @@ jobs:
       WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
     steps:
       - uses: actions/checkout@v4
-      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.2
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.2.0
         with:
           github_token: ${{ secrets.github_token }}
           dbt_project_dir: ./testdata/dbt
@@ -259,7 +258,7 @@ jobs:
       CLUSTER: ${{ secrets.MATERIALIZE_CLUSTER }}"
     steps:
       - uses: actions/checkout@v4
-      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.2
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.2.0
         with:
           github_token: ${{ secrets.github_token }}
           dbt_adapter: materialize
