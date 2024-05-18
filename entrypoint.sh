@@ -5,7 +5,7 @@ git config --global --add safe.directory "${GITHUB_WORKSPACE}"
 
 git fetch --prune --unshallow --no-tags
 changed_files=$(cd "${INPUT_DBT_PROJECT_DIR}" && git diff --name-only --diff-filter=AM --relative \
-  $GITHUB_REF $GITHUB_BASE_REF -- '*.sql')
+  $ITHUB_SHA $GITHUB_BASE_REF -- '*.sql')
 
 
 # if we find no changed files then terminate the program 
