@@ -1,5 +1,18 @@
 #!/bin/sh
 
+
+# Navigate to the dbt project directory
+if [ -n "${GITHUB_WORKSPACE}" ] ; then
+  
+  git config --global --add safe.directory "${GITHUB_WORKSPACE}" 
+  git fetch --prune --unshallow --no-tags
+  changed_files=$(git diff -z --name-only --diff-filter=AM "${INPUTS_GITHUB_BASE_REF}" origin/main -- '*.sql')
+  if [ -z "$changed_files" ]; then
+    echo "No SQL files changed or added"
+  exit 0
+fi
+fi
+
 # create and activate a virtual environment and install the requirements
 # version numbers will be based off of dbt_adapter_version, dbt_core_version and sqfluff_version
 # adapter that will install will be based off the dbt_adapter 
@@ -7,19 +20,9 @@ python3 -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
 
-git fetch --prune --unshallow --no-tags
+cd "${GITHUB_WORKSPACE}/${INPUT_DBT_PROJECT_DIR}" || exit
 
-# Navigate to the dbt project directory
-if [ -n "${GITHUB_WORKSPACE}" ] ; then
-  cd "${GITHUB_WORKSPACE}/${INPUT_DBT_PROJECT_DIR}" || exit
-  git config --global --add safe.directory "${GITHUB_WORKSPACE}" || exit 1
-fi
 
-changed_files=$(git diff -z --name-only --diff-filter=AM "${INPUTS_GITHUB_BASE_REF}" origin/main -- '*.sql')
-if [ -z "$changed_files" ]; then
-  echo "No SQL files changed or added"
-  exit 0
-fi
 
 # create an environment variable that we can use to connect to Reviewdog
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
