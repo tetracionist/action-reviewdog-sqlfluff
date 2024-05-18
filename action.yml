@@ -13,6 +13,11 @@ inputs:
     required: false
     default: "${{ github.base_ref }}"
 
+  github_head_ref:
+    description: "Pull request current branch"
+    required: false
+    default: "${{ github.head_ref }}"
+
   ### Flags for reviewdog ###
   level:
     description: 'Report level for reviewdog [info,warning,error]'
