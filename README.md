@@ -11,15 +11,13 @@
 ![github-pr-review demo](https://user-images.githubusercontent.com/3797062/73162963-4b8e2b00-4132-11ea-9a3f-f9c6f624c79f.png)
 ![github-pr-check demo](https://user-images.githubusercontent.com/3797062/73163032-70829e00-4132-11ea-8481-f213a37db354.png)
 
-This is a template repository for [reviewdog](https://github.com/reviewdog/reviewdog) action with release automation.
-Click `Use this template` button to create your reviewdog action :dog:!
+This GitHub Action enables you to lint and fix SQL code via [SQLFluff]() for different dialects. 
+Primarily I have favoured Snowflake dialects, but there is also support for other dialects and can be extended by using the profiles.yml located in the `testdata/dbt` folder
 
-If you want to create your own reviewdog action from scratch without using this
-template, please check and copy release automation flow.
-It's important to manage release workflow and sync reviewdog version for all
-reviewdog actions.
+If using multiple dialects, for example you might Materialize for real-time data and Snowflake for batch, then please create two separate workflows using this GitHub action. 
+I will add examples below on how this can be done. 
 
-This repo contains a sample action to run [misspell](https://github.com/client9/misspell).
+
 
 ## Input
 ```yaml
@@ -53,53 +51,217 @@ inputs:
     default: ''
 
   ### Flags for dbt ###
+  dbt_adapter: 
+    description: |
+      The dbt adapter is the dialect (e.g. snowflake)
+      This will install the correct adapter version of dbt
+    default: snowflake
   dbt_adapter_version:
+    description: |
+      The dbt adapter version
+      This may not match the dbt-core version in some cases
     default: 1.7.4
   dbt_core_version: 
+    description: |
+      As of dbt version 1.8, the dbt-core version will need to be specified
+      Henceforth I have added this as an input
     default: 1.7.14
   dbt_profiles_dir:
-    default: .
+    description: | 
+      Will also need to set this up in the .sqlfluff file, needs to be relative to your dbt project directory
+      Recommend you copy the profiles_linter directory and place this in your dbt project
+    default: ./profiles_linter
   dbt_project_dir:
-    default: ./dbt
-  dbt_target:
+    description: This is where your dbt project directory is located
+    default: ./testdata/dbt
+  dbt_target: 
+    description: | 
+      The name of the target you need
+      Recommend you copy the profiles_linter directory and place this in your dbt project
     default: snowflake
 
   ### Flags for sqlfluff ###
-  sqlfluff_dialect: 
-    description: dialect of the sql
-    default: snowflake
   sqlfluff_mode:
-    description: fix/lint (fix shows suggestion, lint reports violations)
+    description: | 
+      fix or lint: 
+       - fix shows suggestions of how to fix your code within your PR
+       - lint reports violations will only report the violation
     default: lint
   sqlfluff_templater:
-    description: templater for the sql
+    description: templater for the sql, you probably won't need to change this
     default: dbt
   sqlfluff_version:
+    description: Version for sqlfluff
     default: 3.0.6
 ```
 
 ## Usage
-<!-- TODO: update. replace `template` with the linter name -->
+
+By default these are the actions you should use for linting or fixing SQL files within a dbt project
+These will execute the Snowflake adapter and releveant profiles within your dbt directory. 
+
 
 ```yaml
-name: reviewdog
+name: sqlfluff lint
 on: [pull_request]
 jobs:
-  # TODO: change `linter_name`.
-  linter_name:
-    name: runner / <linter-name>
+  test-pr-review-lint:
+    name: runner / sqlfluff-lint (github-pr-review)
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write 
+    env:
+      ACCOUNT: ${{ secrets.ACCOUNT }}
+      USERNAME: ${{ secrets.USER }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      DATABASE: ${{ secrets.DATABASE }}
+      SCHEMA: ${{ secrets.SCHEMA }}
+      WAREHOUSE: ${{ secrets.WAREHOUSE }}
     steps:
       - uses: actions/checkout@v4
-      - uses: reviewdog/action-template@v1
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.1
         with:
           github_token: ${{ secrets.github_token }}
-          # Change reviewdog reporter if you need [github-pr-check,github-check,github-pr-review].
+          dbt_project_dir: ./testdata/dbt
+          level: error 
           reporter: github-pr-review
-          # Change reporter level if you need.
-          # GitHub Status Check won't become failure with warning.
-          level: warning
+          sqlfluff_mode: lint
+
+
+name: sqlfluff fix
+on: [pull_request]
+jobs:
+  test-pr-review-fix:
+    name: runner / sqlfluff-fix (github-pr-review)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write 
+    env:
+      ACCOUNT: ${{ secrets.ACCOUNT }}
+      USERNAME: ${{ secrets.USER }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      DATABASE: ${{ secrets.DATABASE }}
+      SCHEMA: ${{ secrets.SCHEMA }}
+      WAREHOUSE: ${{ secrets.WAREHOUSE }}
+    
+    steps:
+      - uses: actions/checkout@v4
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.1
+        with:
+          github_token: ${{ secrets.github_token }}
+          dbt_project_dir: ./testdata/dbt
+          level: error 
+          reporter: github-pr-review
+          sqlfluff_mode: fix
+
 ```
+
+If you have multiple adapters, e.g. Snowflake for batch data and Materialize for Real-time, then consider the following to lint these. 
+
+```yaml
+name: sqlfluff multi-adapter lint
+on: [pull_request]
+jobs:
+  test-pr-review-lint-snowflake:
+    name: runner / sqlfluff-snowflake-lint (github-pr-review)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write 
+    env:
+      ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      USERNAME: ${{ secrets.SNOWFLAKE_USER }}
+      PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+      DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
+      SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
+      WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.1
+        with:
+          github_token: ${{ secrets.github_token }}
+          dbt_project_dir: ./testdata/dbt
+          level: error 
+          reporter: github-pr-review
+          sqlfluff_mode: lint
+
+  test-pr-review-lint-materialize:
+    name: runner / sqlfluff-materialize-lint (github-pr-review)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write 
+    env:
+      HOSTNAME: ${{ secrets.MATERIALIZE_HOSTNAME }}"
+      USERNAME: ${{ secrets.MATERIALIZE_USER }}
+      PASSWORD: ${{ secrets.MATERIALIZE_PASSWORD }}
+      DATABASE: ${{ secrets.MATERIALIZE_DATABASE }}
+      SCHEMA: ${{ secrets.MATERIALIZE_SCHEMA }}
+      CLUSTER: ${{ secrets.MATERIALIZE_CLUSTER }}"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.1
+        with:
+          github_token: ${{ secrets.github_token }}
+          dbt_adapter: materialize
+          dbt_project_dir: ./testdata/dbt
+          level: error 
+          reporter: github-pr-review
+          sqlfluff_mode: lint
+
+name: sqlfluff multi-adapter fix
+on: [pull_request]
+jobs:
+  test-pr-review-fix-snowflake:
+    name: runner / sqlfluff-snowflake-fix (github-pr-review)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write 
+    env:
+      ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      USERNAME: ${{ secrets.SNOWFLAKE_USER }}
+      PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+      DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
+      SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
+      WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.1
+        with:
+          github_token: ${{ secrets.github_token }}
+          dbt_project_dir: ./testdata/dbt
+          level: error 
+          reporter: github-pr-review
+          sqlfluff_mode: fix
+
+  test-pr-review-fix-materialize:
+    name: runner / sqlfluff-materialize-fix (github-pr-review)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write 
+    env:
+      HOSTNAME: ${{ secrets.MATERIALIZE_HOSTNAME }}"
+      USERNAME: ${{ secrets.MATERIALIZE_USER }}
+      PASSWORD: ${{ secrets.MATERIALIZE_PASSWORD }}
+      DATABASE: ${{ secrets.MATERIALIZE_DATABASE }}
+      SCHEMA: ${{ secrets.MATERIALIZE_SCHEMA }}
+      CLUSTER: ${{ secrets.MATERIALIZE_CLUSTER }}"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: tetracionist/action-reviewdog-sqlfluff@v0.1.1
+        with:
+          github_token: ${{ secrets.github_token }}
+          dbt_adapter: materialize
+          dbt_project_dir: ./testdata/dbt
+          level: error 
+          reporter: github-pr-review
+          sqlfluff_mode: fix
+```
+
 
 ## Development
 

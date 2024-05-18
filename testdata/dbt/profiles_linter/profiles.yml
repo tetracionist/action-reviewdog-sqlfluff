@@ -1,0 +1,64 @@
+default:
+  target: "{{ env_var('DBT_TARGET', 'snowflake') }}"
+  outputs:
+  
+    snowflake:
+      type: snowflake
+      account: "{{ env_var('ACCOUNT') }}"
+      user: "{{ env_var('USERNAME') }}"
+      password: "{{ env_var('PASSWORD') }}"
+      database: "{{ env_var('DATABASE') }}"
+      schema: "{{ env_var('SCHEMA') }}"
+      warehouse: "{{ env_var('WAREHOUSE') }}"
+
+    duckdb:
+      type: duckdb
+      path: "{{ env_var('DUCKDB_PATH') }}"
+      extensions:
+        - httpfs
+        - parquet
+      settings:
+        s3_region: "{{ env_var('AWS_REGION') }}"
+        s3_access_key_id: "{{ env_var('AWS_ACCESS_KEY_ID') }}"
+        s3_secret_access_key: "{{ env_var('AWS_SECRET_ACCESS_KEY') }}"
+
+    postgres:
+      type: postgres
+      host:  "{{ env_var('HOSTNAME') }}"
+      user: "{{ env_var('USERNAME') }}"
+      password: "{{ env_var('PASSWORD') }}"
+      port: 5432
+      dbname: "{{ env_var('DATABASE') }}"
+      schema: "{{ env_var('SCHEMA') }}"
+
+    materialize:
+      type: materialize
+      host: "{{ env_var('HOSTNAME') }}"
+      port: 6875
+      user: "{{ env_var('USERNAME') }}"
+      pass: "{{ env_var('PASSWORD') }}"
+      database: "{{ env_var('DATABASE') }}"
+      schema: "{{ env_var('SCHEMA', public) }}"
+      cluster: "{{ env_var('CLUSTER', 'compute_cluster') }}"
+      sslmode: require
+    
+    glue:
+      type: glue
+      role_arn: "{{ env_var('AWS_ROLE') }}"
+      region: "{{ env_var('AWS_REGION') }}"
+      workers: 2
+      worker_type: "{{ env_var('AWS_WORKER_TYPE') }}"
+      idle_timeout: 10
+      schema: "{{ env_var('SCHEMA') }}"
+      session_provisioning_timeout_in_seconds: 120
+      location: "{{ env_var('AWS_S3_URI') }}"
+
+    trino:
+      type: trino
+      method: ldap 
+      user: "{{ env_var('USERNAME') }}"
+      password: "{{ env_var('PASSWORD') }}"
+      host: "{{ env_var('HOSTNAME') }}"
+      database: "{{ env_var('DATABASE') }}"
+      schema: "{{ env_var('SCHEMA') }}"
+      port: 443

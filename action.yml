@@ -8,6 +8,15 @@ inputs:
   workdir:
     description: 'Working directory relative to the root directory.'
     default: '.'
+  github_base_ref:
+    description: "Pull request target branch name"
+    required: false
+    default: "${{ github.base_ref }}"
+
+  github_head_ref:
+    description: "Pull request current branch"
+    required: false
+    default: "${{ github.head_ref }}"
 
   ### Flags for reviewdog ###
   level:
@@ -31,30 +40,47 @@ inputs:
     default: ''
 
   ### Flags for dbt ###
+  dbt_adapter: 
+    description: |
+      The dbt adapter is the dialect (e.g. snowflake)
+      This will install the correct adapter version of dbt
+    default: snowflake
   dbt_adapter_version:
+    description: |
+      The dbt adapter version
+      This may not match the dbt-core version in some cases
     default: 1.7.4
   dbt_core_version: 
+    description: |
+      As of dbt version 1.8, the dbt-core version will need to be specified
+      Henceforth I have added this as an input
     default: 1.7.14
   dbt_profiles_dir:
-    default: .
+    description: | 
+      Will also need to set this up in the .sqlfluff file
+      Recommend you copy the profiles_linter directory and place this in your dbt project
+    default: ./profiles_linter
   dbt_project_dir:
-    default: ./dbt
-  dbt_target:
+    description: This is where your dbt project directory is located
+    default: ./testdata/dbt
+  dbt_target: 
+    description: | 
+      The name of the target you need
+      Recommend you copy the profiles_linter directory and place this in your dbt project
     default: snowflake
 
   ### Flags for sqlfluff ###
-  
-  
-  sqlfluff_dialect: 
-    description: dialect of the sql
-    default: snowflake
   sqlfluff_mode:
-    description: fix/lint (fix shows suggestion, lint reports violations)
+    description: | 
+      fix or lint: 
+       - fix shows suggestions of how to fix your code within your PR
+       - lint reports violations will only report the violation
     default: lint
   sqlfluff_templater:
-    description: templater for the sql
+    description: templater for the sql, you probably won't need to change this
     default: dbt
   sqlfluff_version:
+    description: Version for sqlfluff
     default: 3.0.6
 
 runs:

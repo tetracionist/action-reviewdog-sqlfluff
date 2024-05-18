@@ -20,7 +20,6 @@ def transform_to_rdjsonl(lint_output, dbt_project_dir):
     rdjsonl_lines = []
     for result in lint_output:
         for violation in result["violations"]:
-            print(violation["fixes"])
             rdjsonl_line = {
                 "message": violation["description"],
                 "location": {
