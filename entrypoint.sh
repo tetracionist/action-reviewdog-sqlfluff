@@ -23,7 +23,7 @@ cd ${GITHUB_WORKSPACE} || exit
 
 python3 -m venv .venv
 . .venv/bin/activate
-pip install -r requirements.txt
+pip install dbt-${INPUT_DBT_ADAPTER}==${INPUT_DBT_ADAPTER_VERSION} dbt-core==${INPUT_DBT_CORE_VERSION} sqlfluff==${INPUT_SQLFLUFF_VERSION} sqlfluff-templater-dbt==${INPUT_SQLFLUFF_VERSION}
 
 cd "${GITHUB_WORKSPACE}/${INPUT_DBT_PROJECT_DIR}" || exit
 
