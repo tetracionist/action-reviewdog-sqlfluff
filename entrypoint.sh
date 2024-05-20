@@ -35,6 +35,8 @@ export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 # install any dbt dependencies
 dbt clean --profiles-dir "${INPUT_DBT_PROFILES_DIR}" && dbt deps --profiles-dir "${INPUT_DBT_PROFILES_DIR}" 
 
+ls -alt
+
 
 if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then
 
