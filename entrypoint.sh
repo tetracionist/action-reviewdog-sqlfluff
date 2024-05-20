@@ -1,5 +1,7 @@
 #!/bin/sh
 
+ls -alt /
+
 # use git to find any changed sql files
 git config --global --add safe.directory "${GITHUB_WORKSPACE}"
 git fetch origin $GITHUB_HEAD_REF $GITHUB_BASE_REF
