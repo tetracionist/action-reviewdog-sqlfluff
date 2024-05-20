@@ -54,7 +54,7 @@ if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then
 
   # run a python script to convert into a JSON structure that Reviewdog can understand
   # the format will use is rdjsonl – https://github.com/reviewdog/reviewdog/tree/master/proto/rdf#rdjsonl
-  python -m json_to_rdjsonl --dbt_project_dir "${INPUT_DBT_PROJECT_DIR}" 
+  python -m json_to_rdjsonl --dbt_project_dir "${INPUT_DBT_PROJECT_DIR}" --filename "${GITHUB_WORKSPACE}/lint_output.json"
 
   # feed this into Reviewdog and this will now create annotations
   cat < "/violations.rdjsonl" | reviewdog -f=rdjsonl \

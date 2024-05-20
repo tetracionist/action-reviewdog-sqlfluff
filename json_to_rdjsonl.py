@@ -47,9 +47,7 @@ def main():
     )
     parser.add_argument(
         "--filename",
-        help="Path to the JSON lint output file",
-        default="lint_output.json",
-        required=False,
+        help="Path to the JSON lint output file",required=True
     )
     parser.add_argument(
         "--dbt_project_dir", help="Path to the DBT project directory", required=True
