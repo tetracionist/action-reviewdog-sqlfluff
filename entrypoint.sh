@@ -35,7 +35,7 @@ export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 # install any dbt dependencies
 dbt clean --profiles-dir "${INPUT_DBT_PROFILES_DIR}" && dbt deps --profiles-dir "${INPUT_DBT_PROFILES_DIR}" 
 
-ls -alt
+
 
 
 if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then
@@ -48,6 +48,8 @@ if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then
 
   # navigate back to the top of the workspace
   cd "${GITHUB_WORKSPACE}" || exit
+
+  ls -alt
 
   # run a python script to convert into a JSON structure that Reviewdog can understand
   # the format will use is rdjsonl – https://github.com/reviewdog/reviewdog/tree/master/proto/rdf#rdjsonl
