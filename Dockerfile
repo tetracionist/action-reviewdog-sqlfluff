@@ -11,7 +11,7 @@ RUN wget -O - -q https://raw.githubusercontent.com/reviewdog/reviewdog/master/in
 # add python
 RUN apk add --no-cache python3 py3-pip
 
-COPY json_to_rdjsonl.py json_to_rdjsonl.py
+COPY json_to_rdjsonl.py /github/workspace/json_to_rdjsonl.py
 COPY entrypoint.sh entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
