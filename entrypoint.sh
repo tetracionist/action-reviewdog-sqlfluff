@@ -49,16 +49,15 @@ if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then
     --format json > "${GITHUB_WORKSPACE}"/lint_output.json
 
   # navigate back to the top of the workspace
-  cd "${GITHUB_WORKSPACE}" || exit
+  cd / || exit
 
-  ls -alt
 
   # run a python script to convert into a JSON structure that Reviewdog can understand
   # the format will use is rdjsonl – https://github.com/reviewdog/reviewdog/tree/master/proto/rdf#rdjsonl
   python -m json_to_rdjsonl --dbt_project_dir "${INPUT_DBT_PROJECT_DIR}" 
 
   # feed this into Reviewdog and this will now create annotations
-  cat < "${GITHUB_WORKSPACE}"/"violations.rdjsonl"| reviewdog -f=rdjsonl \
+  cat < "/violations.rdjsonl" | reviewdog -f=rdjsonl \
       -name="sqlfluff (sqlfluff-lint)" \
       -reporter="${INPUT_REPORTER:-github-pr-check}" \
       -filter-mode="${INPUT_FILTER_MODE}" \
