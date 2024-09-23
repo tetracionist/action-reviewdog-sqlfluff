@@ -4,7 +4,7 @@ ls -alt /
 
 git fetch origin $GITHUB_HEAD_REF $GITHUB_BASE_REF
 
-changed_files=$(cd "${INPUT_DBT_PROJECT_DIR}" && git diff --name-only --diff-filter=AM --relative \
+changed_files=$(git diff --name-only --diff-filter=AM --relative \
   "origin/$GITHUB_BASE_REF" "origin/$GITHUB_HEAD_REF" -- '*.sql')
 
 
