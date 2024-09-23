@@ -2,11 +2,9 @@
 
 ls -alt /
 
-# use git to find any changed sql files
-git config --global --add safe.directory "${GITHUB_WORKSPACE}"
 git fetch origin $GITHUB_HEAD_REF $GITHUB_BASE_REF
 
-changed_files=$(cd "${GITHUB_WORKSPACE}/${INPUT_DBT_PROJECT_DIR}" && git diff --name-only --diff-filter=AM --relative \
+changed_files=$(cd "${INPUT_DBT_PROJECT_DIR}" && git diff --name-only --diff-filter=AM --relative \
   "origin/$GITHUB_BASE_REF" "origin/$GITHUB_HEAD_REF" -- '*.sql')
 
 
@@ -21,7 +19,7 @@ fi
 # create and activate a virtual environment and install the requirements
 # version numbers will be based off of dbt_adapter_version, dbt_core_version and sqfluff_version
 # adapter that will install will be based off the dbt_adapter 
-cd ${GITHUB_WORKSPACE} || exit
+cd ${INPUT_DBT_PROJECT_DIR} || exit
 
 python3 -m venv .venv
 . .venv/bin/activate
@@ -46,7 +44,7 @@ if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then
   sqlfluff lint --templater "${INPUT_SQLFLUFF_TEMPLATER}" \
     --dialect "${INPUT_DBT_ADAPTER}" \
     --disable-progress-bar $changed_files \
-    --format json > "${GITHUB_WORKSPACE}"/lint_output.json
+    --format json > "${INPUT_DBT_PROJECT_DIR}"/lint_output.json
 
   # navigate back to the top of the workspace
   cd / || exit
@@ -54,7 +52,7 @@ if [[ "${INPUT_SQLFLUFF_MODE}" == "lint" ]]; then
 
   # run a python script to convert into a JSON structure that Reviewdog can understand
   # the format will use is rdjsonl – https://github.com/reviewdog/reviewdog/tree/master/proto/rdf#rdjsonl
-  python -m json_to_rdjsonl --dbt_project_dir "${INPUT_DBT_PROJECT_DIR}" --filename "${GITHUB_WORKSPACE}/lint_output.json"
+  python -m json_to_rdjsonl --dbt_project_dir "${INPUT_DBT_PROJECT_DIR}" --filename "${INPUT_DBT_PROJECT_DIR}/lint_output.json"
 
   # feed this into Reviewdog and this will now create annotations
   cat < "/violations.rdjsonl" | reviewdog -f=rdjsonl \
@@ -72,7 +70,7 @@ elif [[ "${INPUT_SQLFLUFF_MODE}" == "fix" ]]; then
     --dialect "${INPUT_DBT_ADAPTER}" $changed_files
 
   # navigate to the top of the workspace or we will not be able to 
-  cd "${GITHUB_WORKSPACE}" || exit
+  cd "${INPUT_DBT_PROJECT_DIR}" || exit
 
   # send the git working changes to a temporary file and then discard any working changes
   # Reviewdog use the differences between these to generate comments on linting violations and suggest fixes 
