@@ -1,10 +1,10 @@
 #!/bin/sh
 
 ls -alt /
-
+git config --global --add safe.directory /github/workspace
 git fetch origin $GITHUB_HEAD_REF $GITHUB_BASE_REF
 
-ls
+ls -alt
 
 changed_files=$(git diff --name-only --diff-filter=AM --relative \
   "origin/$GITHUB_BASE_REF" "origin/$GITHUB_HEAD_REF" -- '*.sql')
