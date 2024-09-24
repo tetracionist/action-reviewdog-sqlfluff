@@ -1,7 +1,6 @@
 #!/bin/sh
 
-ls -alt /
-git config --global --add safe.directory /github/workspace
+git config --global --add safe.directory ${GITHUB_WORKSPACE}
 git fetch origin $GITHUB_HEAD_REF $GITHUB_BASE_REF
 
 changed_files=$(git diff --name-only --diff-filter=AM --relative \
@@ -15,11 +14,15 @@ if [ -z "$changed_files" ]; then
   exit 0
 fi
 
+ls -alt
+
 
 # create and activate a virtual environment and install the requirements
 # version numbers will be based off of dbt_adapter_version, dbt_core_version and sqfluff_version
 # adapter that will install will be based off the dbt_adapter 
 cd ${INPUT_DBT_PROJECT_DIR} || exit
+
+ls -alt
 
 python3 -m venv .venv
 . .venv/bin/activate
